@@ -16,7 +16,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Order {
     @Id
-    Long orderID;
+    String orderID;
     String customerID;
     String restaurantID;
     String shipperID;

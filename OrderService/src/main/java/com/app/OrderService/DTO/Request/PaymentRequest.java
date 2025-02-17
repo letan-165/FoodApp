@@ -12,9 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaymentRequest {
-    @Id
-    Long paymentID;
-    Long orderID;
+    String orderID;
     Long amount;
     LocalDateTime time;
     String method;

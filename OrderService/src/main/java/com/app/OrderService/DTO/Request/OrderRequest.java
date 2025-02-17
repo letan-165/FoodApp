@@ -14,8 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderRequest {
-    @Id
-    Long orderID;
+    String orderID;
     String customerID;
     String restaurantID;
     String shipperID;

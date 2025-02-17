@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RestaurantRequest {
-    @Id
     String userID;
     String name;
     List<Item> menu;

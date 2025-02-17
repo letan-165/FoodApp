@@ -13,8 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RestaurantResponse {
-    @Id
-    Long restaurantID;
+    String restaurantID;
     String userID;
     String name;
     List<Item> menu;

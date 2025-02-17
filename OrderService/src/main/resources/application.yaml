@@ -7,7 +7,4 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/FoodApp
-      username: root
-      password: root
-      authentication-database: admin
+      uri: mongodb://root:root@localhost:27017/FoodApp?authSource=admin

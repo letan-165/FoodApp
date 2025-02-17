@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Payment {
     @Id
-    Long paymentID;
-    Long orderID;
+    String paymentID;
+    String orderID;
     Long amount;
     LocalDateTime time;
     String method;

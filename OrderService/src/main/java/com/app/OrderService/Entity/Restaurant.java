@@ -15,7 +15,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Restaurant {
     @Id
-    Long restaurantID;
+    String restaurantID;
     String userID;
     String name;
     List<Item> menu;
