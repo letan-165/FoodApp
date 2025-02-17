@@ -1,19 +1,17 @@
-package com.app.OrderService.Entity;
+package com.app.OrderService.DTO.Request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Payment {
+public class PaymentRequest {
     @Id
     Long paymentID;
     Long orderID;

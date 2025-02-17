@@ -1,6 +1,6 @@
 package com.app.OrderService.Exception;
 
-import com.app.AccountService.DTO.ApiResponse;
+import com.app.OrderService.DTO.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

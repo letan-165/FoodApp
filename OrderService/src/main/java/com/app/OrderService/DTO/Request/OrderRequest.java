@@ -1,25 +1,26 @@
-package com.app.OrderService.Entity;
+package com.app.OrderService.DTO.Request;
 
+import com.app.OrderService.Entity.Item;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Document
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Restaurant {
+public class OrderRequest {
     @Id
-    Long restaurantID;
-    String userID;
-    String name;
+    Long orderID;
+    String customerID;
+    String restaurantID;
+    String shipperID;
     List<Item> menu;
-    String address;
-    String phone;
+    Long total;
+    LocalDateTime time;
     String status;
 }

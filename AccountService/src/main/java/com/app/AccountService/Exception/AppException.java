@@ -1,7 +1,12 @@
 package com.app.AccountService.Exception;
 
-public class AppException extends Exception{
-    AppException(ErrorCode e){
+import lombok.Data;
+
+@Data
+public class AppException extends RuntimeException{
+    private  ErrorCode errorCode;
+    public AppException(ErrorCode e){
         super(e.getMessage());
+        this.errorCode = e;
     }
 }

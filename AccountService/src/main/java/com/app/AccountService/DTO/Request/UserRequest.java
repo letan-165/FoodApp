@@ -1,25 +1,18 @@
-package com.app.AccountService.Entity;
+package com.app.AccountService.DTO.Request;
 
-import jakarta.persistence.*;
+import com.app.AccountService.Entity.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Entity
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String userID;
-
+public class UserRequest {
     String name;
     String password;
     String phone;
     String gmail;
-
-    @ManyToOne
-    Role role;
+    String role;
 }

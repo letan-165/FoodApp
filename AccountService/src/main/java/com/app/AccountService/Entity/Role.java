@@ -1,10 +1,10 @@
 package com.app.AccountService.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Entity
 @Builder
@@ -15,8 +15,8 @@ import lombok.experimental.FieldDefaults;
 public class Role {
     @Id
     String name;
-    String describe;
+    String description;
 
-    @OneToMany
-    Permission permission;
+    @ManyToMany
+    List<Permission> permissions;
 }

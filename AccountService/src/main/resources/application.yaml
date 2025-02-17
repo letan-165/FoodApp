@@ -1,1 +1,14 @@
-spring.application.name=AccountService
+server:
+  port: 8080
+  servlet:
+    context-path: /account_service
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/FoodApp
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update

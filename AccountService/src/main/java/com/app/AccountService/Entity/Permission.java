@@ -1,7 +1,6 @@
 package com.app.AccountService.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,5 +13,5 @@ import lombok.experimental.FieldDefaults;
 public class Permission {
     @Id
     String name;
-    String describe;
+    String description;
 }
