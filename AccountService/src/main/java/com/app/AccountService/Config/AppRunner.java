@@ -12,9 +12,10 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class AppRunner {
     RoleRepository roleRepository;
     PermissionRepository permissionRepository;
     UserRepository userRepository;
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
     @Bean
     ApplicationRunner applicationRunner(){
@@ -52,7 +54,7 @@ public class AppRunner {
                 userRepository.save(User.builder()
                                 .name("tan1")
                                 .gmail("tan@1")
-                                .password("1")
+                                .password(passwordEncoder.encode("1"))
                                 .role(roles.get(0))
                                 .phone("0102")
                         .build());

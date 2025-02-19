@@ -12,3 +12,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+key:
+  value: this-is-a-very-long-secret-key-32-characters

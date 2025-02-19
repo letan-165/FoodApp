@@ -2,6 +2,7 @@ package com.app.OrderService.Exception;
 
 import com.app.OrderService.DTO.ApiResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -17,5 +18,27 @@ public class GlobalExceptionHandling {
                         .message(errorCode.message)
                         .build());
     }
+
+    @ExceptionHandler(value = AppException.class)
+    ResponseEntity<ApiResponse> handlingAppException(AppException exception){
+        ErrorCode errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.httpStatus)
+                .body(ApiResponse.builder()
+                        .code(errorCode.code)
+                        .message(errorCode.message)
+                        .build());
+    }
+
+    @ExceptionHandler(value = AuthorizationDeniedException.class)
+    ResponseEntity<ApiResponse> handlingDeniedException(){
+        ErrorCode errorCode = ErrorCode.AUTHORIZED;
+        return ResponseEntity.status(errorCode.httpStatus)
+                .body(ApiResponse.builder()
+                        .code(errorCode.code)
+                        .message(errorCode.message)
+                        .build());
+    }
+
+
 
 }

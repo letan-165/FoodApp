@@ -8,6 +8,9 @@ import com.app.AccountService.Service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.List;
 public class UserController {
     UserService userService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     ApiResponse<List<User>>findAll(){
         return ApiResponse.<List<User>>builder()
@@ -39,18 +43,21 @@ public class UserController {
                 .result(userService.findById(userID))
                 .build();
     }
+
     @PostMapping("/name={userID}")
     ApiResponse<UserResponse>findByName(@PathVariable String userID){
         return ApiResponse.<UserResponse>builder()
                 .result(userService.findByName(userID))
                 .build();
     }
+
     @PutMapping("/{userID}")
     ApiResponse<UserResponse>update( @PathVariable String userID,@RequestBody UserRequest request){
         return ApiResponse.<UserResponse>builder()
                 .result(userService.update(userID,request))
                 .build();
     }
+
     @DeleteMapping("/{userID}")
     ApiResponse<Boolean>delete(@PathVariable String userID){
         return ApiResponse.<Boolean>builder()
