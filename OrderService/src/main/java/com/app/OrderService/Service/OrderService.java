@@ -2,10 +2,12 @@ package com.app.OrderService.Service;
 
 import com.app.OrderService.DTO.Request.OrderRequest;
 import com.app.OrderService.DTO.Response.OrderResponse;
+import com.app.OrderService.DTO.Response.UserResponse;
 import com.app.OrderService.Entity.Order;
 import com.app.OrderService.Exception.AppException;
 import com.app.OrderService.Exception.ErrorCode;
 import com.app.OrderService.Mapper.OrderMapper;
+import com.app.OrderService.Repository.HttpClient.UserClient;
 import com.app.OrderService.Repository.OrderRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.List;
 public class OrderService {
     OrderRepository orderRepository;
     OrderMapper orderMapper;
+    UserClient userClient;
 
     public List<Order> findAll(){
         return orderRepository.findAll();

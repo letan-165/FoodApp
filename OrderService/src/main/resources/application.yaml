@@ -9,5 +9,9 @@ spring:
     mongodb:
       uri: mongodb://root:root@localhost:27017/FoodApp?authSource=admin
 
+app:
+  service:
+    account: http://localhost:8080/account_service
+
 key:
   value: this-is-a-very-long-secret-key-32-characters

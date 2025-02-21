@@ -9,12 +9,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="OrderService" />
         <module name="AccountService" />
+        <module name="ApiGateway" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="AccountService" options="-parameters" />
+      <module name="ApiGateway" options="-parameters" />
       <module name="OrderService" options="-parameters" />
     </option>
   </component>
