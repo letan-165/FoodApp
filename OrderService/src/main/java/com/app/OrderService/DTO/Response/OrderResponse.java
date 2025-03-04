@@ -1,9 +1,8 @@
 package com.app.OrderService.DTO.Response;
 
-import com.app.OrderService.Entity.Item;
+import com.app.OrderService.Model.ItemModel;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +17,7 @@ public class OrderResponse {
     String customerID;
     String restaurantID;
     String shipperID;
-    List<Item> menu;
+    List<ItemModel> menu;
     Long total;
     LocalDateTime time;
     String status;

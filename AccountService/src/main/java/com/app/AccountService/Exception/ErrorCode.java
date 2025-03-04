@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatusCode;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    USER_NAME_EXISTS(1008,"User name existed", HttpStatus.BAD_REQUEST),
     AUTHENTICATION(1007,"Token not authentication ", HttpStatus.UNAUTHORIZED),
     AUTHORIZED(1006,"You don't have permission", HttpStatus.FORBIDDEN),
     PASSWORD_UN_VALID(1005,"Password don't valid", HttpStatus.BAD_REQUEST),

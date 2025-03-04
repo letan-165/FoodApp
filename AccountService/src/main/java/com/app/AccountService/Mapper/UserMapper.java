@@ -9,8 +9,9 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper{
-    @Mapping(target = "role",ignore = true)
+    @Mapping(target = "roles",ignore = true)
     User toUser(UserRequest request);
-    @Mapping(target = "role",ignore = true)
+
+    @Mapping(target = "roles",ignore = true)
     UserResponse toUserResponse(User user);
 }

@@ -39,7 +39,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
     String apiPrefix;
 
     @NonFinal
-    String[] publicEntryPoint = {"/account_service/auth/.*",""};
+    String[] publicEntryPoint = {"/account_service/auth/.*","/.*"};
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

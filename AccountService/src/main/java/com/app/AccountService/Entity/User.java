@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Entity
 @Builder
 @Data
@@ -20,6 +22,6 @@ public class User {
     String phone;
     String gmail;
 
-    @ManyToOne
-    Role role;
+    @ManyToMany
+    List<Role> roles;
 }

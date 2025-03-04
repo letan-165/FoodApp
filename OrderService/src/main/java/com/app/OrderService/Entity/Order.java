@@ -1,12 +1,14 @@
 package com.app.OrderService.Entity;
 
+import com.app.OrderService.Enum.OrderStatus;
+import com.app.OrderService.Model.ItemModel;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 @Document
 @Builder
@@ -20,8 +22,11 @@ public class Order {
     String customerID;
     String restaurantID;
     String shipperID;
-    List<Item> menu;
+
+    @Builder.Default
+    Map<Long,ItemModel> menu = new HashMap<>();
+
     Long total;
     LocalDateTime time;
-    String status;
+    OrderStatus status;
 }

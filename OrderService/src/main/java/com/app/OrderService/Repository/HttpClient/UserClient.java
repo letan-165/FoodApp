@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient(name = "user",url = "${app.service.account}")
 public interface UserClient {
-    @PostMapping(value = "/user/id=${userID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/user/id={userID}", produces = MediaType.APPLICATION_JSON_VALUE)
     ApiResponse<UserResponse> findById (@PathVariable String userID);
 
-    @PostMapping(value = "/user/name=${name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/user/name={name}", produces = MediaType.APPLICATION_JSON_VALUE)
     ApiResponse<UserResponse> findByName (@PathVariable String name);
 }

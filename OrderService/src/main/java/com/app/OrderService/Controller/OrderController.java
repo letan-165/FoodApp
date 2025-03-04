@@ -20,10 +20,10 @@ import java.util.List;
 public class OrderController {
     OrderService orderService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @GetMapping
-    ApiResponse<List<Order>>findAll(){
-        return ApiResponse.<List<Order>>builder()
+    ApiResponse<List<OrderResponse>>findAll(){
+        return ApiResponse.<List<OrderResponse>>builder()
                 .result(orderService.findAll())
                 .build();
     }
@@ -31,7 +31,7 @@ public class OrderController {
     @PostMapping
     ApiResponse<OrderResponse>save(@RequestBody OrderRequest request){
         return ApiResponse.<OrderResponse>builder()
-                .result(orderService.save(request))
+                .result(orderService.save("",request))
                 .build();
     }
 
@@ -44,7 +44,7 @@ public class OrderController {
     @PutMapping("/{orderID}")
     ApiResponse<OrderResponse>update( @PathVariable String orderID,@RequestBody OrderRequest request){
         return ApiResponse.<OrderResponse>builder()
-                .result(orderService.update(orderID,request))
+                .result(orderService.save(orderID,request))
                 .build();
     }
     @DeleteMapping("/{orderID}")

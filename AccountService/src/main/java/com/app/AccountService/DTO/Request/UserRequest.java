@@ -4,6 +4,8 @@ import com.app.AccountService.Entity.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.*;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -14,5 +16,7 @@ public class UserRequest {
     String password;
     String phone;
     String gmail;
-    String role;
+
+    @Builder.Default
+    List<String> roles = new ArrayList<>(Collections.emptyList());;
 }

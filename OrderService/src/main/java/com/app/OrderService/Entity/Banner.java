@@ -1,25 +1,18 @@
 package com.app.OrderService.Entity;
 
-import com.app.OrderService.Enum.PaymentStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-
 @Document
 @Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Payment {
+public class Banner {
     @Id
-    String paymentID;
-    String orderID;
-    Long amount;
-    LocalDateTime time;
-    String method;
-    PaymentStatus status;
+    String userID;
+    String reason;
 }

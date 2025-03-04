@@ -48,14 +48,14 @@ public class AppRunner {
             }
             if (!roleRepository.existsById(roles.get(0).getName())) {
                 roleRepository.saveAll(roles);
-                }
+            }
 
             if (!userRepository.existsByName("tan1")) {
                 userRepository.save(User.builder()
                                 .name("tan1")
                                 .gmail("tan@1")
                                 .password(passwordEncoder.encode("1"))
-                                .role(roles.get(0))
+                                .roles(roles)
                                 .phone("0102")
                         .build());
             }

@@ -1,5 +1,6 @@
 package com.app.AccountService.Entity;
 
+import com.app.AccountService.Enum.RoleEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

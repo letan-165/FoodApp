@@ -1,5 +1,6 @@
-package com.app.OrderService.Entity;
+package com.app.OrderService.Model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,7 +10,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Item {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ItemModel {
     Long itemID;
     String name;
     Long quantity;

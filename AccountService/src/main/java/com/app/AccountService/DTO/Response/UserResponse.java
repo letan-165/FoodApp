@@ -4,6 +4,8 @@ import com.app.AccountService.Entity.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -14,5 +16,5 @@ public class UserResponse {
     String name;
     String phone;
     String gmail;
-    String role;
+    List<String> roles;
 }

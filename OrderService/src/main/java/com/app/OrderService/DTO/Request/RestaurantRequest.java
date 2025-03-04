@@ -1,9 +1,8 @@
 package com.app.OrderService.DTO.Request;
 
-import com.app.OrderService.Entity.Item;
+import com.app.OrderService.Model.ItemModel;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
@@ -15,7 +14,6 @@ import java.util.List;
 public class RestaurantRequest {
     String userID;
     String name;
-    List<Item> menu;
     String address;
     String phone;
     String status;

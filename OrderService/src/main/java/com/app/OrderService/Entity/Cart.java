@@ -1,25 +1,20 @@
 package com.app.OrderService.Entity;
 
-import com.app.OrderService.Enum.PaymentStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Document
-@Builder
 @Data
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Payment {
+public class Cart {
     @Id
-    String paymentID;
-    String orderID;
-    Long amount;
-    LocalDateTime time;
-    String method;
-    PaymentStatus status;
+    String userID;
+    List<Restaurant> restaurants;
 }

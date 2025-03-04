@@ -8,9 +8,6 @@ import com.app.AccountService.Service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +19,7 @@ import java.util.List;
 public class UserController {
     UserService userService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @GetMapping
     ApiResponse<List<User>>findAll(){
         return ApiResponse.<List<User>>builder()

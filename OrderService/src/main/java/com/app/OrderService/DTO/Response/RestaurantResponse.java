@@ -1,11 +1,11 @@
 package com.app.OrderService.DTO.Response;
 
-import com.app.OrderService.Entity.Item;
+import com.app.OrderService.Model.ItemModel;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.annotation.Id;
 
-import java.util.List;
+import java.util.*;
 
 @Builder
 @Data
@@ -16,7 +16,9 @@ public class RestaurantResponse {
     String restaurantID;
     String userID;
     String name;
-    List<Item> menu;
+
+    @Builder.Default
+    List<ItemModel> menu = new ArrayList<>(Collections.emptyList());
     String address;
     String phone;
     String status;
