@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatusCode;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    CART_NO_EXISTS(1012,"Cart not exists ", HttpStatus.BAD_REQUEST),
+    CART_EXISTS(1011,"Cart had exists", HttpStatus.BAD_REQUEST),
     AUTHENTICATION(1010,"Token not authentication ", HttpStatus.UNAUTHORIZED),
     AUTHORIZED(1009,"You don't have permission", HttpStatus.FORBIDDEN),
     ITEM_NO_EXISTS(1008,"Item not exists", HttpStatus.BAD_REQUEST),

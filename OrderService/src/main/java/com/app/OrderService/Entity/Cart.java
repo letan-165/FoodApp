@@ -5,7 +5,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Document
 @Data
@@ -16,5 +18,5 @@ import java.util.List;
 public class Cart {
     @Id
     String userID;
-    List<Restaurant> restaurants;
+    Map<String,Restaurant> restaurants = new HashMap<>();
 }
