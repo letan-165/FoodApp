@@ -3,17 +3,17 @@ package com.app.AccountService.Controller;
 import com.app.AccountService.DTO.ApiResponse;
 import com.app.AccountService.DTO.Request.LoginRequest;
 import com.app.AccountService.DTO.Request.TokenRequest;
+import com.app.AccountService.Entity.Logout;
 import com.app.AccountService.Service.AuthService;
+import com.app.AccountService.Service.LogoutService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -35,5 +35,29 @@ public class AuthController {
                 .result(authService.instropect(request))
                 .build();
      }
+
+     @GetMapping("/logout")
+     public ApiResponse<List<Logout>> findAll() {
+        return ApiResponse.<List<Logout>>builder()
+                .result(authService.findAll())
+                .build();
+     }
+
+     @PostMapping("/logout")
+     public ApiResponse<Logout> logout(@RequestBody TokenRequest request) {
+        return ApiResponse.<Logout>builder()
+                .result(authService.save(request.getToken()))
+                .build();
+     }
+
+     @PostMapping("/find")
+     public ApiResponse<String> findUserID(@RequestBody TokenRequest request) {
+        return ApiResponse.<String>builder()
+                .result(authService.findUserID(request.getToken()))
+                .build();
+     }
+
+
+
 
 }

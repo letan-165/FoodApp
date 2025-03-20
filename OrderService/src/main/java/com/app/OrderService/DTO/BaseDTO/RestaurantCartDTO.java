@@ -1,6 +1,5 @@
-package com.app.OrderService.DTO.Response;
+package com.app.OrderService.DTO.BaseDTO;
 
-import com.app.OrderService.Entity.Restaurant;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CartResponse {
-    String userID;
-    List<RestaurantResponse> restaurants;
+public class RestaurantCartDTO {
+    String restaurantID;
+    List<ItemCartDTO> menu;
 }

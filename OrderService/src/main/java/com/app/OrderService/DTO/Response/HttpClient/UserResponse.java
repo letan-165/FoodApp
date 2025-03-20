@@ -1,6 +1,5 @@
-package com.app.OrderService.DTO.Request;
+package com.app.OrderService.DTO.Response.HttpClient;
 
-import com.app.OrderService.Model.ItemModel;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,10 +10,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RestaurantRequest {
+public class UserResponse {
     String userID;
     String name;
-    String address;
     String phone;
-    String status;
+    String gmail;
+    List<String> roles;
 }

@@ -1,8 +1,10 @@
 package com.app.AccountService.Config;
 
+import com.app.AccountService.DTO.Request.CartRequest;
 import com.app.AccountService.Entity.Permission;
 import com.app.AccountService.Entity.Role;
 import com.app.AccountService.Entity.User;
+import com.app.AccountService.Repository.HttpClient.CartClient;
 import com.app.AccountService.Repository.PermissionRepository;
 import com.app.AccountService.Repository.RoleRepository;
 import com.app.AccountService.Repository.UserRepository;
@@ -26,7 +28,9 @@ public class AppRunner {
     RoleRepository roleRepository;
     PermissionRepository permissionRepository;
     UserRepository userRepository;
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+    PasswordEncoder passwordEncoder;
+    CartClient cartClient;
+
 
     @Bean
     ApplicationRunner applicationRunner(){
@@ -51,13 +55,15 @@ public class AppRunner {
             }
 
             if (!userRepository.existsByName("tan1")) {
-                userRepository.save(User.builder()
+                User user = userRepository.save(User.builder()
                                 .name("tan1")
                                 .gmail("tan@1")
                                 .password(passwordEncoder.encode("1"))
                                 .roles(roles)
                                 .phone("0102")
                         .build());
+                cartClient.save(CartRequest.builder()
+                        .userID(user.getUserID()).build());
             }
         };
     }

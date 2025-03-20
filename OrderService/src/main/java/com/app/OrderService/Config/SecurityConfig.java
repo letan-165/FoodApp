@@ -30,7 +30,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated());
 
         http.oauth2ResourceServer(oauth->oauth.jwt(jwt->jwt
-                .decoder(jwtDecoder())
+                .decoder(new JwtDecoderCustom())
                 .jwtAuthenticationConverter( jwtAuthenticationConverter()))
                 .authenticationEntryPoint(new AuthEntryPoint()));
 
@@ -43,14 +43,14 @@ public class SecurityConfig {
     @Value("${key.value}")
     String KEY;
 
-    @Bean
-    JwtDecoder jwtDecoder(){
-        SecretKeySpec secretKeySpec = new SecretKeySpec(KEY.getBytes(),"HS256");
-        return NimbusJwtDecoder
-                .withSecretKey(secretKeySpec)
-                .macAlgorithm(MacAlgorithm.HS256)
-                .build();
-    }
+//    @Bean
+//    JwtDecoder jwtDecoder(){
+//        SecretKeySpec secretKeySpec = new SecretKeySpec(KEY.getBytes(),"HS256");
+//        return NimbusJwtDecoder
+//                .withSecretKey(secretKeySpec)
+//                .macAlgorithm(MacAlgorithm.HS256)
+//                .build();
+//    }
 
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter(){

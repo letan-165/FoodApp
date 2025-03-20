@@ -1,7 +1,7 @@
 package com.app.OrderService.Repository.HttpClient;
 
 import com.app.OrderService.DTO.ApiResponse;
-import com.app.OrderService.DTO.Response.UserResponse;
+import com.app.OrderService.DTO.Response.HttpClient.UserResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,5 +1,6 @@
 package com.app.AccountService.Service;
 
+import com.app.AccountService.DTO.Request.CartRequest;
 import com.app.AccountService.DTO.Request.UserRequest;
 import com.app.AccountService.DTO.Response.UserResponse;
 import com.app.AccountService.Entity.Role;
@@ -8,6 +9,7 @@ import com.app.AccountService.Enum.RoleEnum;
 import com.app.AccountService.Exception.AppException;
 import com.app.AccountService.Exception.ErrorCode;
 import com.app.AccountService.Mapper.UserMapper;
+import com.app.AccountService.Repository.HttpClient.CartClient;
 import com.app.AccountService.Repository.RoleRepository;
 import com.app.AccountService.Repository.UserRepository;
 import lombok.AccessLevel;
@@ -30,26 +32,11 @@ public class UserService {
     UserRepository userRepository;
     RoleRepository roleRepository;
     UserMapper userMapper;
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+    PasswordEncoder passwordEncoder;
+    CartClient cartClient;
 
     public List<User> findAll(){
         return userRepository.findAll();
-    }
-
-    UserResponse toUserResponse(String userID,UserRequest request){
-        User user = userMapper.toUser(request);
-        if(CollectionUtils.isEmpty(request.getRoles())){
-            request.getRoles().add(RoleEnum.CUSTOMER.getName());
-        }
-        if(!userID.isEmpty()){
-            user.setUserID(userID);
-        }
-        List<Role> roles =  roleRepository.findAllById(request.getRoles());
-
-        user.setRoles(roles);
-        UserResponse userResponse = userMapper.toUserResponse(userRepository.save(user));
-        userResponse.setRoles(request.getRoles());
-        return userResponse;
     }
 
     public UserResponse save(UserRequest request){
@@ -57,7 +44,18 @@ public class UserService {
             throw new AppException(ErrorCode.USER_EXISTS);
         }
         request.setPassword(passwordEncoder.encode(request.getPassword()));
-        return toUserResponse("",request);
+        request.getRoles().add(RoleEnum.CUSTOMER.getName());
+        UserResponse userResponse = userMapper.toUserResponse(
+                userRepository.save(userMapper.toUser(request)));
+        try{
+            cartClient.save(CartRequest.builder()
+                    .userID(userResponse.getUserID())
+                    .build());
+        }catch (Exception e){
+            throw new RuntimeException("False create cart");
+        }
+
+        return userResponse;
     }
 
     public UserResponse update(String userID,UserRequest request){
@@ -66,40 +64,40 @@ public class UserService {
 
         Optional<User> checkUserName = userRepository.findByName(request.getName());
 
-        if(checkUserName.isPresent() && !userID.equals(checkUserName.get().getUserID())){
+        if(checkUserName.isPresent() && !userID.equals(checkUserName.get().getUserID()))
             throw new AppException(ErrorCode.USER_NAME_EXISTS);
-        }
 
-        if (request.getPassword()==null){
-            request.setPassword(user.getPassword());
-        }else{
-            request.setPassword(passwordEncoder.encode(request.getPassword()));
-        }
+        request.setPassword((request.getPassword()==null)
+                ? user.getPassword()
+                : passwordEncoder.encode(request.getPassword()));
 
-        return toUserResponse(userID, request);
+        User userUpdate = userMapper.toUser(request);
+        userUpdate.setUserID(userID);
+
+        return userMapper.toUserResponse(
+                userRepository.save(userUpdate));
     }
 
     public UserResponse findById(String userID){
         User user = userRepository.findById(userID)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NO_EXISTS));
 
-        UserResponse userResponse =  userMapper.toUserResponse(user);
-        userResponse.setRoles(user.getRoles().stream().map(Role::getName).toList());
-
-        return userResponse;
+        return userMapper.toUserResponse(user);
     }
     public UserResponse findByName(String name){
         User user = userRepository.findByName(name)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NO_EXISTS));
 
-        UserResponse userResponse =  userMapper.toUserResponse(user);
-        userResponse.setRoles(user.getRoles().stream().map(Role::getName).toList());
-        return userResponse;
+        return userMapper.toUserResponse(user);
     }
 
     public Boolean delete(String userID){
         try{
-            userRepository.deleteById(userID);
+            boolean deleteCart =
+                    cartClient.delete(userID).getResult();
+            if(deleteCart)
+                userRepository.deleteById(userID);
+
             return true;
         } catch (Exception e) {
             throw new AppException(ErrorCode.USER_NO_EXISTS);

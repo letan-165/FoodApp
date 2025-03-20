@@ -1,9 +1,7 @@
-package com.app.OrderService.DTO.Request;
+package com.app.AccountService.DTO.Request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @Data
 @Builder

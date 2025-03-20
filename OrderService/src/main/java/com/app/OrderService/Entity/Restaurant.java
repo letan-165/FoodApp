@@ -1,7 +1,7 @@
 package com.app.OrderService.Entity;
 
+import com.app.OrderService.DTO.BaseDTO.ItemDTO;
 import com.app.OrderService.Enum.RestaurantStatus;
-import com.app.OrderService.Model.ItemModel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.*;
 
 @Document
-@Builder
+@Builder(toBuilder = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +24,7 @@ public class Restaurant {
     String name;
 
     @Builder.Default
-    Map<Long,ItemModel> menu = new HashMap<>();
+    Map<Long, ItemDTO> menu = new HashMap<>();
     String address;
     String phone;
     RestaurantStatus status;

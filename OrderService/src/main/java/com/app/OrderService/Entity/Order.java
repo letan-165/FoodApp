@@ -1,7 +1,8 @@
 package com.app.OrderService.Entity;
 
+import com.app.OrderService.DTO.BaseDTO.ItemCartDTO;
+import com.app.OrderService.DTO.BaseDTO.ItemDTO;
 import com.app.OrderService.Enum.OrderStatus;
-import com.app.OrderService.Model.ItemModel;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
@@ -24,7 +25,7 @@ public class Order {
     String shipperID;
 
     @Builder.Default
-    Map<Long,ItemModel> menu = new HashMap<>();
+    Map<Long, ItemDTO> menu = new HashMap<>();
 
     Long total;
     LocalDateTime time;

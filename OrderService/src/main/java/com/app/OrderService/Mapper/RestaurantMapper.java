@@ -1,23 +1,19 @@
 package com.app.OrderService.Mapper;
 
-import com.app.OrderService.DTO.Request.RestaurantRequest;
-import com.app.OrderService.DTO.Response.RestaurantResponse;
+import com.app.OrderService.DTO.Request.Restaurant.RestaurantSaveRequest;
+import com.app.OrderService.DTO.Request.Restaurant.RestaurantUpdateRequest;
+import com.app.OrderService.DTO.Response.Restaurant.RestaurantResponse;
 import com.app.OrderService.Entity.Restaurant;
-import com.app.OrderService.Model.ItemModel;
+import com.app.OrderService.Mapper.CustomMapper.CustomMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-@Mapper(componentModel = "spring",uses = CustomerMapper.class)
+@Mapper(componentModel = "spring", uses = CustomMapper.class)
 public interface RestaurantMapper {
-    Restaurant toRestaurant(RestaurantRequest request);
-
-
-    @Mapping(target = "menu", source = "menu", qualifiedByName = "mapToList")
+    @Mapping(target = "menu", source = "menu", qualifiedByName = "mapToListMenu")
     RestaurantResponse toRestaurantResponse(Restaurant restaurant);
+
+
+    Restaurant toRestaurant(RestaurantSaveRequest request);
+    Restaurant toRestaurant(RestaurantUpdateRequest request);
 }

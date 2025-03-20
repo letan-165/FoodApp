@@ -5,7 +5,7 @@ import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Builder
@@ -15,6 +15,6 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Logout {
     @Id
-    String token;
-    LocalDateTime expiryTime;
+    String tokenID;
+    Instant expiryTime;
 }

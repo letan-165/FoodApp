@@ -1,15 +1,16 @@
 package com.app.OrderService.Entity;
 
+import com.app.OrderService.Enum.PaymentMethod;
 import com.app.OrderService.Enum.PaymentStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Document
-@Builder
+@Builder(toBuilder = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +20,7 @@ public class Payment {
     String paymentID;
     String orderID;
     Long amount;
-    LocalDateTime time;
-    String method;
+    Instant time;
+    PaymentMethod method;
     PaymentStatus status;
 }

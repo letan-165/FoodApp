@@ -9,7 +9,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public enum PaymentMethod {
+    NONE("NONE"),
     CASH("CASH"),
-    MOMO("MOMO");
+    BANK("BANK");
     String name;
 }

@@ -1,26 +1,26 @@
-package com.app.OrderService.DTO.Response;
+package com.app.OrderService.DTO.Response.Restaurant;
 
-import com.app.OrderService.Model.ItemModel;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.app.OrderService.DTO.BaseDTO.ItemDTO;
+import com.app.OrderService.Enum.RestaurantStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RestaurantResponse {
     String restaurantID;
     String userID;
     String name;
 
     @Builder.Default
-    List<ItemModel> menu = new ArrayList<>(Collections.emptyList());
+    List<ItemDTO> menu = new ArrayList<>();
     String address;
     String phone;
-    String status;
+    RestaurantStatus status;
 }

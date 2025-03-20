@@ -15,3 +15,7 @@ spring:
 
 key:
   value: this-is-a-very-long-secret-key-32-characters
+
+app:
+  services:
+    cart: http://localhost:8081/order_service/cart
