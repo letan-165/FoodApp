@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ItemDTO extends ItemCartDTO {
+public class ItemEntity extends ItemCartEntity {
     String name;
     Long price;
 }

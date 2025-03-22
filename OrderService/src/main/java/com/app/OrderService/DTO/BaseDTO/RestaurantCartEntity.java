@@ -4,9 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Data
@@ -14,9 +12,9 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RestaurantCartDTO {
+public class RestaurantCartEntity {
     String restaurantID;
 
     @Builder.Default
-    Map<Long ,ItemCartDTO> menu = new HashMap<>();
+    Map<Long , ItemCartEntity> menu = new HashMap<>();
 }

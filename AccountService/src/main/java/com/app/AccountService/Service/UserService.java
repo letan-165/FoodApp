@@ -1,9 +1,7 @@
 package com.app.AccountService.Service;
 
-import com.app.AccountService.DTO.Request.CartRequest;
 import com.app.AccountService.DTO.Request.UserRequest;
 import com.app.AccountService.DTO.Response.UserResponse;
-import com.app.AccountService.Entity.Role;
 import com.app.AccountService.Entity.User;
 import com.app.AccountService.Enum.RoleEnum;
 import com.app.AccountService.Exception.AppException;
@@ -16,10 +14,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,9 +44,7 @@ public class UserService {
         UserResponse userResponse = userMapper.toUserResponse(
                 userRepository.save(userMapper.toUser(request)));
         try{
-            cartClient.save(CartRequest.builder()
-                    .userID(userResponse.getUserID())
-                    .build());
+            cartClient.save(userResponse.getUserID());
         }catch (Exception e){
             throw new RuntimeException("False create cart");
         }

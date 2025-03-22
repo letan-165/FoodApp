@@ -1,15 +1,15 @@
-package com.app.OrderService.DTO.BaseDTO;
+package com.app.OrderService.DTO.Request.Cart;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 
 @Data
-@SuperBuilder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ItemCartEntity {
+public class ItemCartRequest {
+    String cartID;
+    String restaurantID;
     Long itemID;
-    Long quantity;
 }

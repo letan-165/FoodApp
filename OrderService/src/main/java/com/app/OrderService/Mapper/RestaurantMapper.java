@@ -16,4 +16,5 @@ public interface RestaurantMapper {
 
     Restaurant toRestaurant(RestaurantSaveRequest request);
     Restaurant toRestaurant(RestaurantUpdateRequest request);
+
 }

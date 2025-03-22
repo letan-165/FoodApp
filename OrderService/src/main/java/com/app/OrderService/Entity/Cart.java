@@ -1,6 +1,6 @@
 package com.app.OrderService.Entity;
 
-import com.app.OrderService.DTO.BaseDTO.RestaurantCartDTO;
+import com.app.OrderService.DTO.BaseDTO.RestaurantCartEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
@@ -18,5 +18,5 @@ import java.util.Map;
 public class Cart {
     @Id
     String userID;
-    Map<String, Restaurant> restaurants = new HashMap<>();
+    Map<String, RestaurantCartEntity> restaurants = new HashMap<>();
 }

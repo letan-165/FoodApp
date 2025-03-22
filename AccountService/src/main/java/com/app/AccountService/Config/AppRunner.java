@@ -1,6 +1,5 @@
 package com.app.AccountService.Config;
 
-import com.app.AccountService.DTO.Request.CartRequest;
 import com.app.AccountService.Entity.Permission;
 import com.app.AccountService.Entity.Role;
 import com.app.AccountService.Entity.User;
@@ -14,7 +13,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
@@ -62,8 +60,7 @@ public class AppRunner {
                                 .roles(roles)
                                 .phone("0102")
                         .build());
-                cartClient.save(CartRequest.builder()
-                        .userID(user.getUserID()).build());
+                cartClient.save(user.getUserID());
             }
         };
     }

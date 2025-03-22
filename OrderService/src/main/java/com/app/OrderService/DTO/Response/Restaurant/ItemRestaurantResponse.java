@@ -1,11 +1,10 @@
 package com.app.OrderService.DTO.Response.Restaurant;
 
-import com.app.OrderService.DTO.BaseDTO.ItemDTO;
+import com.app.OrderService.DTO.BaseDTO.ItemEntity;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @AllArgsConstructor
-public class ItemRestaurantResponse extends ItemDTO {
+public class ItemRestaurantResponse extends ItemEntity {
 }

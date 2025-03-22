@@ -1,6 +1,6 @@
 package com.app.OrderService.Service;
 
-import com.app.OrderService.DTO.BaseDTO.ItemDTO;
+import com.app.OrderService.DTO.BaseDTO.ItemEntity;
 import com.app.OrderService.DTO.Request.Restaurant.ItemEditRequest;
 import com.app.OrderService.DTO.Request.Restaurant.RestaurantSaveRequest;
 import com.app.OrderService.DTO.Request.Restaurant.RestaurantUpdateRequest;
@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -87,6 +86,7 @@ public class RestaurantService {
         }
     }
 
+    ItemService itemService;
     ItemMapper itemMapper;
 
     public ItemRestaurantResponse addItem(String restaurantID, ItemEditRequest request){
@@ -94,7 +94,7 @@ public class RestaurantService {
                 .orElseThrow(()->new AppException(ErrorCode.RESTAURANT_NO_EXISTS));
 
         Long itemID = 1 + restaurant.getMenu().values().stream()
-                .map(ItemDTO::getItemID)
+                .map(ItemEntity::getItemID)
                 .max(Long::compareTo)
                 .orElse(0L);
 
@@ -113,10 +113,8 @@ public class RestaurantService {
     public ItemRestaurantResponse editItem(String restaurantID,Long itemID, ItemEditRequest request){
         Restaurant restaurant = restaurantRepository.findById(restaurantID)
                 .orElseThrow(()->new AppException(ErrorCode.RESTAURANT_NO_EXISTS));
-        boolean checkItemID = restaurant.getMenu().values().stream().anyMatch(itemDTO -> itemDTO.getItemID().equals(itemID));
 
-        if(!checkItemID)
-            throw new AppException(ErrorCode.ITEM_NO_EXISTS);
+        itemService.findItem(restaurantID,itemID);
 
         ItemRestaurantResponse itemDTO = itemMapper.toItemRestaurantResponse(request);
         itemDTO.setItemID(itemID);
@@ -134,7 +132,7 @@ public class RestaurantService {
         Restaurant restaurant = restaurantRepository.findById(restaurantID)
                 .orElseThrow(()->new AppException(ErrorCode.RESTAURANT_NO_EXISTS));
 
-        ItemDTO itemDTO = restaurant.getMenu().remove(itemID);
+        ItemEntity itemDTO = restaurant.getMenu().remove(itemID);
 
         if(itemID==null)
             return false;
@@ -145,16 +143,15 @@ public class RestaurantService {
         } catch (Exception e) {
             throw new RuntimeException("Xóa item không thành công");
         }
+    }
 
-
-    }public Boolean deleteMenu(String restaurantID){
+    public Boolean deleteMenu(String restaurantID){
         Restaurant restaurant = restaurantRepository.findById(restaurantID)
                 .orElseThrow(()->new AppException(ErrorCode.RESTAURANT_NO_EXISTS));
 
         restaurant.setMenu(Collections.emptyMap());
         if(!restaurant.getMenu().values().isEmpty())
             return false;
-
 
         try{
             restaurantRepository.save(restaurant);

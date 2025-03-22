@@ -1,6 +1,6 @@
 package com.app.OrderService.Entity;
 
-import com.app.OrderService.DTO.BaseDTO.ItemDTO;
+import com.app.OrderService.DTO.BaseDTO.ItemEntity;
 import com.app.OrderService.Enum.RestaurantStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -24,7 +24,7 @@ public class Restaurant {
     String name;
 
     @Builder.Default
-    Map<Long, ItemDTO> menu = new HashMap<>();
+    Map<Long, ItemEntity> menu = new HashMap<>();
     String address;
     String phone;
     RestaurantStatus status;
