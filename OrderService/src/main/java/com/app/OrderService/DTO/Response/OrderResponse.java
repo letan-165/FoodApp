@@ -20,10 +20,13 @@ public class OrderResponse {
     String customerID;
     String restaurantID;
     String shipperID;
+    String paymentID;
 
     @Builder.Default
     List<ItemEntity> menu = new ArrayList<>();
     Long total;
     Instant time;
     OrderStatus status;
+    String address;
+    String phone;
 }

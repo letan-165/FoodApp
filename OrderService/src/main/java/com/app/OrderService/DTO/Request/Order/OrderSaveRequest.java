@@ -18,5 +18,9 @@ import java.util.List;
 public class OrderSaveRequest {
     String customerID;
     String restaurantID;
+    String paymentID;
     List<ItemCartEntity> menu;
+
+    String address;
+    String phone;
 }

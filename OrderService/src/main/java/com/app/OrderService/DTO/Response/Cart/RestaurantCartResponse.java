@@ -1,6 +1,7 @@
 package com.app.OrderService.DTO.Response.Cart;
 
 import com.app.OrderService.DTO.BaseDTO.ItemCartEntity;
+import com.app.OrderService.DTO.BaseDTO.ItemEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,7 +15,8 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RestaurantCartResponse {
     String restaurantID;
+    String name;
 
     @Builder.Default
-    List<ItemCartEntity> menu = new ArrayList<>();
+    List<ItemEntity> menu = new ArrayList<>();
 }

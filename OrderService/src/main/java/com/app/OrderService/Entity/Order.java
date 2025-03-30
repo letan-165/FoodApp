@@ -23,6 +23,7 @@ public class Order {
     String customerID;
     String restaurantID;
     String shipperID;
+    String paymentID;
 
     @Builder.Default
     Map<Long, ItemEntity> menu = new HashMap<>();
@@ -30,4 +31,7 @@ public class Order {
     Long total;
     Instant time;
     OrderStatus status;
+    String address;
+    String phone;
+
 }

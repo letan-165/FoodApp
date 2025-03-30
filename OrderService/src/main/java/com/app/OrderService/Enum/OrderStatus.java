@@ -11,11 +11,10 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public enum OrderStatus {
     PENDING("PENDING"),
-    PAYMENT ("PAYMENT"),
+    CONFIRMED("CONFIRMED"),
     ON_DELIVERY("ON_DELIVERY"),
     DELIVERED("DELIVERED"),
-    CANCELLED("CANCELLED"),
-    CONFIRMED("CONFIRMED");
+    CANCELLED("CANCELLED");
 
     String name;
 

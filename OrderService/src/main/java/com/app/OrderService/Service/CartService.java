@@ -68,23 +68,29 @@ public class CartService {
 
         itemService.findItem(request.getRestaurantID(), request.getItemID());
 
+
         RestaurantCartEntity restaurantCart = cart.getRestaurants().get(request.getRestaurantID());
         if (restaurantCart==null)
             restaurantCart = RestaurantCartEntity.builder()
                     .restaurantID(request.getRestaurantID())
                     .build();
 
-        ItemCartEntity itemCart = ItemCartEntity.builder()
-                .itemID(request.getItemID())
-                .quantity(1L)
-                .build();
+        restaurantCart.getMenu().get(request.getItemID());
 
-        restaurantCart.getMenu().put(request.getItemID(), itemCart);
+        ItemCartEntity itemCart = restaurantCart.getMenu()
+                .putIfAbsent(request.getItemID(), ItemCartEntity.builder()
+                        .itemID(request.getItemID())
+                        .quantity(1L)
+                    .build());
+
+        if(itemCart!=null)
+            throw new RuntimeException("item đã tồn tại trong giỏ hàng");
+
         cart.getRestaurants().put(restaurantCart.getRestaurantID(),restaurantCart);
 
         try{
             cartRepository.save(cart);
-            return cartMapper.toRestaurantCartResponse(restaurantCart);
+            return cartMapper.toRestaurantCartResponse( restaurantCart,request.getRestaurantID());
         }catch (Exception e){
             throw new RuntimeException("Thêm item không thành công");
         }

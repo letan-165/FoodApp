@@ -5,6 +5,7 @@ import com.app.OrderService.DTO.BaseDTO.ItemEntity;
 import com.app.OrderService.DTO.BaseDTO.RestaurantCartEntity;
 import com.app.OrderService.DTO.Request.Order.OrderSaveRequest;
 import com.app.OrderService.DTO.Request.Order.OrderUpdateReQuest;
+import com.app.OrderService.DTO.Request.Order.OrderUpdateStatusRequest;
 import com.app.OrderService.DTO.Response.OrderResponse;
 import com.app.OrderService.Entity.Cart;
 import com.app.OrderService.Entity.Order;
@@ -43,6 +44,36 @@ public class OrderService {
         List<Order> orders = orderRepository.findAll();
         return orders.stream().map((orderMapper::toOrderResponse)).toList();
     }
+
+    public List<OrderResponse> findAllByUser(String userID){
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream()
+                .filter(order -> order.getCustomerID().equals(userID))
+                .map((orderMapper::toOrderResponse)).toList();
+    }
+
+    public List<OrderResponse> findAllByRestaurant(String restaurantID){
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream()
+                .filter(order -> order.getRestaurantID().equals(restaurantID))
+                .map((orderMapper::toOrderResponse)).toList();
+    }
+
+    public List<OrderResponse> findAllByShipper(String shipperID){
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream()
+                .filter(order -> order.getShipperID()!=null && order.getShipperID().equals(shipperID))
+                .map((orderMapper::toOrderResponse)).toList();
+    }
+
+    public List<OrderResponse> findAllStatus(String status){
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream()
+                .filter(order -> order.getStatus().equals(OrderStatus.valueOf(status)))
+                .map((orderMapper::toOrderResponse)).toList();
+    }
+
+
 
     public OrderResponse save(OrderSaveRequest request,boolean fromCart){
         userClient.findById(request.getCustomerID());
@@ -130,9 +161,6 @@ public class OrderService {
 
 
 
-
-
-
     public Map<Long,ItemEntity> menuOrder (List<ItemCartEntity> menu,Restaurant restaurant) {
         return menu.stream()
                 .map(itemCart->{
@@ -152,6 +180,18 @@ public class OrderService {
                 .sum();
     }
 
+
+    public OrderResponse updateStatus(String orderID,OrderUpdateStatusRequest request){
+        Order order = orderRepository.findById(orderID)
+                .orElseThrow(()->new AppException(ErrorCode.ORDER_NO_EXISTS));
+        if(request.getShipperID() !=null){
+            userClient.findById(request.getShipperID());
+            order.setShipperID(request.getShipperID());
+        }
+        order.setStatus(request.getStatus());
+
+        return orderMapper.toOrderResponse(orderRepository.save(order));
+    }
 
 
 
