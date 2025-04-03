@@ -1,20 +1,18 @@
 package com.app.OtherService.DTO.Response.Client;
 
+import com.app.OtherService.DTO.Response.Chat.ChatResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ChatBotResponse {
-    String id;
+public class ChatBotResponse extends ChatResponse {
     String object;
     long created;
     String model;
-    List<ChoicesChatBotResponse> choices;
     UsageChatBotResponse usage;
 }

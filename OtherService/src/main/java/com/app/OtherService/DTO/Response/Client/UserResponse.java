@@ -1,16 +1,19 @@
 package com.app.OtherService.DTO.Response.Client;
 
-import com.app.OtherService.DTO.BaseDTO.MessageDTO;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+import java.util.List;
+
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ChoicesChatBotResponse {
-    Long index;
-    MessageDTO message;
-    String finish_reason;
+public class UserResponse {
+    String userID;
+    String name;
+    String phone;
+    String gmail;
+    List<String> roles;
 }

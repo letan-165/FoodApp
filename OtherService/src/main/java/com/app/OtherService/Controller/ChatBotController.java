@@ -2,7 +2,7 @@ package com.app.OtherService.Controller;
 
 import com.app.OtherService.DTO.ApiResponse;
 import com.app.OtherService.DTO.Request.Client.ChatBotRequest;
-import com.app.OtherService.DTO.Response.Client.ChatBotResponse;
+import com.app.OtherService.DTO.Response.Chat.ChatResponse;
 import com.app.OtherService.Service.ChatBotService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +22,9 @@ public class ChatBotController {
     ChatBotService chatBotService;
 
     @PostMapping
-    ApiResponse<ChatBotResponse> sendChatBot(@RequestBody ChatBotRequest request){
+    ApiResponse<ChatResponse> sendChatBot(@RequestBody ChatBotRequest request){
         log.info(request.toString());
-        return ApiResponse.<ChatBotResponse>builder()
+        return ApiResponse.<ChatResponse>builder()
                 .message("Letan gửi chatbot")
                 .result(chatBotService.sendChatBot(request))
                 .build();

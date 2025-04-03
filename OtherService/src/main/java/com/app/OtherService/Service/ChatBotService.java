@@ -1,8 +1,9 @@
 package com.app.OtherService.Service;
 
 import com.app.OtherService.DTO.Request.Client.ChatBotRequest;
-import com.app.OtherService.DTO.Response.Client.ChatBotResponse;
-import com.app.OtherService.Enum.ChatBotModel;
+import com.app.OtherService.DTO.Response.Chat.ChatResponse;
+import com.app.OtherService.Enum.ModelChatBot;
+import com.app.OtherService.Mapper.ChatMapper;
 import com.app.OtherService.Repository.HttpClient.ChatBotClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,21 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ChatBotService {
     ChatBotClient chatBotClient;
+    ChatMapper messageMapper;
 
     @NonFinal
     @Value("${chatbot.key}")
     String keyChatBot;
 
-    public ChatBotResponse sendChatBot(ChatBotRequest request){
-        request.setModel(ChatBotModel.DEEPSEAK_V3.getModel());
-        return chatBotClient.sendChatBot("Bearer " + keyChatBot,request);
+    public ChatResponse sendChatBot(ChatBotRequest request){
+        request.setModel(ModelChatBot.DEEPSEAK_V3.getModel());
+        ChatResponse messageResponse = messageMapper.toChatResponse(chatBotClient
+                .sendChatBot("Bearer " + keyChatBot,request));
+        messageResponse.setUser("user");
+        messageResponse.setUser2("ChatBot");
+        return messageResponse;
     };
+
+
+
 }

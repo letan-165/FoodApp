@@ -1,6 +1,6 @@
 package com.app.OtherService.DTO.Request.Client;
 
-import com.app.OtherService.DTO.BaseDTO.MessageChatBot;
+import com.app.OtherService.DTO.BaseDTO.MessageDTO;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -13,5 +13,5 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ChatBotRequest {
     String model;
-    List<MessageChatBot> messages;
+    List<MessageDTO> messages;
 }
