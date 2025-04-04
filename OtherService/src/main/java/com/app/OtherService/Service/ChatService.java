@@ -44,7 +44,7 @@ public class ChatService {
         chat.getChoices().add(ChoicesChatBotResponse.builder()
                 .index(index+1)
                 .message(request.getMessage())
-                .finish_reason("ok")
+                .finish_reason("NO")
                 .build());
 
 
