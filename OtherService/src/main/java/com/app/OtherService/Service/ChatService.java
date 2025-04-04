@@ -1,10 +1,12 @@
 package com.app.OtherService.Service;
 
-import com.app.OtherService.DTO.Request.Chat.ChatRequest;
+import com.app.OtherService.DTO.BaseDTO.MessageDTO;
+import com.app.OtherService.DTO.Request.Chat.CreateChatRequest;
+import com.app.OtherService.DTO.Request.Chat.RecallMessageRequest;
+import com.app.OtherService.DTO.Request.Chat.SendChatRequest;
 import com.app.OtherService.DTO.Response.Chat.ChatResponse;
 import com.app.OtherService.DTO.Response.Client.ChoicesChatBotResponse;
 import com.app.OtherService.Entity.Chat;
-import com.app.OtherService.Exception.AppException;
 import com.app.OtherService.Mapper.ChatMapper;
 import com.app.OtherService.Repository.ChatRepository;
 import com.app.OtherService.Repository.HttpClient.UserClient;
@@ -25,29 +27,58 @@ public class ChatService {
     ChatMapper chatMapper;
     UserClient userClient;
 
-    public ChatResponse boxChat(ChatRequest request){
+
+    public String createChat(CreateChatRequest request){
         userClient.findById(request.getUser());
         userClient.findById(request.getUser2());
-        String sender = request.getMessage().getRole();
-        if(!sender.equals(request.getUser()) && !sender.equals(request.getUser2()))
-            throw new RuntimeException("Lỗi do role không trùng lớp request user");
 
-        Chat requestChat = chatMapper.toChat(request);
-        Chat chat = (request.getId() == null)
-            ? requestChat.toBuilder()
-                .choices(new ArrayList<>())
-                .build()
-            : chatRepository.findById(request.getId()).orElseThrow(()-> new RuntimeException("Chat no exits"));
+        Chat chat = chatRepository.save(Chat.builder()
+                        .user(request.getUser())
+                        .user2(request.getUser2())
+                        .choices(new ArrayList<>())
+                .build());
+        return chat.getId();
+    }
 
-        long index = chat.getChoices().stream().mapToLong(ChoicesChatBotResponse::getIndex).max().orElse(0L);
+    public void sendChat(String chatID, MessageDTO message){
+        Chat chat = chatRepository.findById(chatID)
+                .orElseThrow(()-> new RuntimeException("Chat no exits"));
+
+        String sender = message.getRole();
+        if(!sender.equals(chat.getUser()) && !sender.equals(chat.getUser2()))
+            throw new RuntimeException("Lỗi do role không trùng lớp chat user");
+
+        long index = chat.getChoices().stream()
+                .mapToLong(ChoicesChatBotResponse::getIndex)
+                .max()
+                .orElse(-1L);
 
         chat.getChoices().add(ChoicesChatBotResponse.builder()
                 .index(index+1)
-                .message(request.getMessage())
+                .message(message)
                 .finish_reason("NO")
                 .build());
 
+        chatRepository.save(chat);
+    }
 
-        return chatMapper.toChatResponse(chatRepository.save(chat));
+    public void recallMessage(String chatID,RecallMessageRequest request){
+        Chat chat = chatRepository.findById(chatID)
+                .orElseThrow(()->new RuntimeException("Chat no exists"));
+
+        if(!request.getUserID().equals(chat.getUser()) && !request.getUserID().equals(chat.getUser2()))
+            throw new RuntimeException("User recall unvalid ");
+
+        if(!request.getUserID().equals(chat.getChoices().get(request.getMessageIndex()).getMessage().getRole()))
+            throw new RuntimeException("User not permission recall ");
+
+        chat.getChoices().get(request.getMessageIndex()).getMessage().setContent("Tin nhắn đã bị thu hồi");
+        chatRepository.save(chat);
+    }
+
+
+    public ChatResponse findChat(String chatID){
+        return chatMapper.toChatResponse(chatRepository.findById(chatID)
+                .orElseThrow(()->new RuntimeException("Chat no exists")));
     }
 }

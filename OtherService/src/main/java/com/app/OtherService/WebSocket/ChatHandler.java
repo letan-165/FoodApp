@@ -1,10 +1,10 @@
-package com.app.OtherService.Config.WebSocket;
+package com.app.OtherService.WebSocket;
 
-import com.app.OtherService.DTO.Request.Chat.ChatRequest;
-import com.app.OtherService.DTO.Request.Client.TokenRequest;
+import com.app.OtherService.DTO.Request.Chat.SendChatRequest;
 import com.app.OtherService.DTO.Response.Chat.ChatResponse;
 import com.app.OtherService.Repository.HttpClient.UserClient;
 import com.app.OtherService.Service.ChatService;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -33,15 +33,30 @@ public class ChatHandler extends TextWebSocketHandler {
     public void handleTextMessage(WebSocketSession session, TextMessage message){
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            ChatRequest request = objectMapper.readValue(message.getPayload(),ChatRequest.class);
-            ChatResponse chatResponse = chatService.boxChat(request);
-            String toJson = objectMapper.writeValueAsString(chatResponse);
+            SendChatRequest request = objectMapper.readValue(message.getPayload(), SendChatRequest.class);
 
-            WebSocketSession sendUser1 = webSocketSessionMap.get(request.getUser());
+            switch (request.getAction()){
+                case "CREATE":
+                    request.setId(chatService.createChat(request.getCreate()));
+                    break;
+                case "SEND":
+                    chatService.sendChat(request.getId(),request.getSend());
+                    break;
+                case "RECALL":
+                    chatService.recallMessage(request.getId(),request.getRecall());
+                    break;
+                default:
+                 throw new RuntimeException("Action errol");
+            }
+
+            ChatResponse chatResponse = chatService.findChat(request.getId());
+            String toJson = objectMapper.writeValueAsString(chatResponse);
+            WebSocketSession sendUser1 = webSocketSessionMap.get(chatResponse.getUser());
+
             if(sendUser1!=null)
                 sendUser1.sendMessage(new TextMessage((toJson)));
 
-            WebSocketSession sendUser2 = webSocketSessionMap.get(request.getUser2());
+            WebSocketSession sendUser2 = webSocketSessionMap.get(chatResponse.getUser2());
             if(sendUser2!=null)
                 sendUser2.sendMessage(new TextMessage((toJson)));
 
@@ -53,30 +68,19 @@ public class ChatHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        String userID = getUserID(session);
-        if(!userID.isEmpty())
+        String userID = (String) session.getAttributes().get("userID");
+        if(userID != null && !userID.isEmpty())
              webSocketSessionMap.put(userID,session);
+
         System.out.println("Mở kết nối chat: " + userID);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        String userID = getUserID(session);
-        if(!userID.isEmpty())
+        String userID = (String) session.getAttributes().get("userID");
+        if(userID != null && !userID.isEmpty())
             webSocketSessionMap.remove(userID);
         System.out.println("Đóng kết nối chat: " + userID);
     }
 
-
-    String getUserID(WebSocketSession session){
-        String headerAuthorization = session.getHandshakeHeaders().getFirst("Authorization");
-        if(headerAuthorization==null)
-            return "";
-
-        String token = headerAuthorization.replace("Bearer ","");
-
-        return userClient.getUserIDFromToken(TokenRequest.builder()
-                .token(token)
-                .build()).getResult();
-    }
 }

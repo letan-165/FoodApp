@@ -1,12 +1,11 @@
 package com.app.OtherService.Entity;
 
-import com.app.OtherService.DTO.Response.Client.ChoicesChatBotResponse;
+import com.app.OtherService.DTO.BaseDTO.MessageDTO;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Document
@@ -15,10 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Chat {
+public class ChatBot {
     @Id
-    String id;
     String user;
-    String user2;
-    List<ChoicesChatBotResponse> choices = new ArrayList<>();
+    List<MessageDTO> messages;
 }
