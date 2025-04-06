@@ -2,11 +2,10 @@ package com.app.AccountService.Service;
 
 import com.app.AccountService.DTO.Request.LoginRequest;
 import com.app.AccountService.DTO.Request.TokenRequest;
-import com.app.AccountService.Entity.Logout;
+import com.app.AccountService.Entity.Token;
 import com.app.AccountService.Entity.User;
 import com.app.AccountService.Exception.AppException;
 import com.app.AccountService.Exception.ErrorCode;
-import com.app.AccountService.Repository.LogoutRepository;
 import com.app.AccountService.Repository.UserRepository;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -19,16 +18,15 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.List;
 import java.util.StringJoiner;
 import java.util.UUID;
 
@@ -39,18 +37,20 @@ import java.util.UUID;
 @Slf4j
 public class AuthService {
     UserRepository userRepository;
-    LogoutRepository logoutRepository;
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+    LoginService loginService;
+    PasswordEncoder passwordEncoder;
 
     @NonFinal
     @Value("${key.value}")
     String KEY;
 
     public String login(LoginRequest request) {
-        User user = userRepository.findByName(request.getUsername()).orElseThrow(()->new AppException(ErrorCode.USER_NO_EXISTS));
-        if (!passwordEncoder.matches(request.getPassword(),user.getPassword())) {
+        User user = userRepository.findByName(request.getUsername())
+                .orElseThrow(()->new AppException(ErrorCode.USER_NO_EXISTS));
+
+        if (!passwordEncoder.matches(request.getPassword(),user.getPassword()))
             throw new AppException(ErrorCode.PASSWORD_UN_VALID);
-        }
+
         return generaToken(user);
     }
 
@@ -63,34 +63,27 @@ public class AuthService {
         Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
         boolean verified = signedJWT.verify(jwsVerifier);
 
-        if (logoutRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID())) {
+        if (loginService.getToken(signedJWT.getJWTClaimsSet().getSubject()) == null)
             throw new AppException(ErrorCode.TOKEN_LOGOUT);
-        }
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        log.info("Token expiry time: {}", dateFormat.format(expiryTime));
         return verified && expiryTime.after(new Date());
     }
 
-    public List<Logout> findAll(){
-        return logoutRepository.findAll();
-    }
 
-    public Logout save(String token){
+    public boolean deleteToken(String token){
         try {
-            instropect(TokenRequest.builder().token(token).build());
-            SignedJWT signedJWT = SignedJWT.parse(token);
-            return logoutRepository.save(Logout.builder()
-                    .expiryTime(signedJWT.getJWTClaimsSet().getExpirationTime().toInstant())
-                    .tokenID(signedJWT.getJWTClaimsSet().getJWTID())
-                    .build());
-        } catch (ParseException |JOSEException e) {
-            throw new AppException(ErrorCode.AUTHENTICATION);
+            SignedJWT jwt = SignedJWT.parse(token);
+            return loginService.deleteToken(jwt.getJWTClaimsSet().getSubject());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public String findUserID(String token){
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
-
             return signedJWT.getJWTClaimsSet().getSubject();
         } catch (ParseException e) {
             throw new AppException(ErrorCode.AUTHENTICATION);
@@ -99,16 +92,13 @@ public class AuthService {
     }
 
 
-
-
-
     public String generaToken(User user){
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .jwtID(UUID.randomUUID().toString())
                 .issuer("LeTan")
                 .subject(user.getUserID())
                 .issueTime(new Date())
-                .expirationTime(new Date(Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))
+                .expirationTime(new Date(Instant.now().plus(1, ChronoUnit.MINUTES).toEpochMilli()))
                 .claim("scope",buildScope(user))
                 .build();
 
@@ -116,6 +106,12 @@ public class AuthService {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
         JWSObject jwsObject = new JWSObject(jwsHeader,payload);
 
+
+        //Lưu login
+        loginService.saveToken(user.getUserID(), Token.builder()
+                        .tokenID(jwtClaimsSet.getJWTID())
+                        .expiryTime(jwtClaimsSet.getExpirationTime().toInstant())
+                .build());
         try {
             jwsObject.sign(new MACSigner(KEY.getBytes()));
         } catch (JOSEException e) {
