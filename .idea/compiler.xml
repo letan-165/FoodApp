@@ -11,6 +11,7 @@
         <module name="AccountService" />
         <module name="ApiGateway" />
         <module name="OtherService" />
+        <module name="ChatService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -21,6 +22,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="AccountService" options="-parameters" />
       <module name="ApiGateway" options="-parameters" />
+      <module name="ChatService" options="-parameters" />
       <module name="OrderService" options="-parameters" />
       <module name="OtherService" options="-parameters" />
       <module name="ShoppingService" options="-parameters" />

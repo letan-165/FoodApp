@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/ApiGateway/pom.xml" />
         <option value="$PROJECT_DIR$/ShoppingService/pom.xml" />
         <option value="$PROJECT_DIR$/OtherService/pom.xml" />
+        <option value="$PROJECT_DIR$/ChatService/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
