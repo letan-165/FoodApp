@@ -12,5 +12,15 @@ app:
   service:
     account: http://localhost:8080/account_service
 
+  client:
+    smtp: https://api.brevo.com/v3/smtp
+    contact:
+      name: Food App
+      email: 2251160057@ut.edu.vn
+
+
+
+
 key:
-  jwt: this-is-a-very-long-secret-key-32-characters
+  jwt:
+  email:

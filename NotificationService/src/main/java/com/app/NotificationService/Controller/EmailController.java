@@ -24,7 +24,7 @@ public class EmailController {
     @PostMapping
     ApiResponse<EmailResponse> sendEmail(@RequestBody SendEmailRequest request){
         return ApiResponse.<EmailResponse>builder()
-                .message("Gửi gmail đến "+request.getToUserID())
+                .message("Gửi gmail đến "+request.getTo().getEmail())
                 .result(emailService.sendEmail(request))
                 .build();
     }

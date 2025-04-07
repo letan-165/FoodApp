@@ -1,13 +1,15 @@
-package com.app.NotificationService.DTO.Request.Client;
-
+package com.app.AccountService.DTO.Request.Client;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TokenRequest {
-    String token;
+public class SendEmailRequest {
+    Sender to;
+    String subject;
+    String content;
 }

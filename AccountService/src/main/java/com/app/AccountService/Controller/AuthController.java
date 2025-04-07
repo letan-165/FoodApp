@@ -1,9 +1,12 @@
 package com.app.AccountService.Controller;
 
 import com.app.AccountService.DTO.ApiResponse;
+import com.app.AccountService.DTO.Request.OTP.EmailRequest;
 import com.app.AccountService.DTO.Request.LoginRequest;
+import com.app.AccountService.DTO.Request.OTP.OTPRequest;
 import com.app.AccountService.DTO.Request.TokenRequest;
 import com.app.AccountService.Service.AuthService;
+import com.app.AccountService.Service.OTPService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -33,21 +36,12 @@ public class AuthController {
                 .build();
      }
 
-//     @GetMapping("/logout")
-//     public ApiResponse<List<Logout>> findAll() {
-//        return ApiResponse.<List<Logout>>builder()
-//                .result(authService.findAll())
-//                .build();
-//     }
-//
      @PostMapping("/logout")
      public ApiResponse<Boolean> logout(@RequestBody TokenRequest request) {
         return ApiResponse.<Boolean>builder()
                 .result(authService.deleteToken(request.getToken()))
                 .build();
      }
-
-
 
      @PostMapping("/find")
      public ApiResponse<String> findUserID(@RequestBody TokenRequest request) {
@@ -56,6 +50,20 @@ public class AuthController {
                 .build();
      }
 
+    OTPService otpService;
+    @GetMapping("/otp")
+    public ApiResponse<Integer> createOTP(@RequestBody EmailRequest request) {
+        return ApiResponse.<Integer>builder()
+                .result(otpService.createOTP(request.getEmail()))
+                .build();
+    }
+
+    @PostMapping("/otp")
+    public ApiResponse<Boolean> verifyOTP(@RequestBody OTPRequest request) {
+        return ApiResponse.<Boolean>builder()
+                .result(otpService.verifyOTP(request.getEmail(), request.getOtp()))
+                .build();
+    }
 
 
 

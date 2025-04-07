@@ -17,8 +17,12 @@
             RedisTemplate<String, Object> template = new RedisTemplate<>();
             template.setConnectionFactory(factory);
 
+            // Sử dụng StringRedisSerializer cho key
             template.setKeySerializer(new StringRedisSerializer());
-            template.setValueSerializer(new StringRedisSerializer());
+
+            // Sử dụng GenericJackson2JsonRedisSerializer cho value
+            template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
             return template;
         }
 

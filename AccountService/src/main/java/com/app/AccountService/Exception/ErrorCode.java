@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatusCode;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    OTP_NO_VERIFY(1010,"OTP no verify", HttpStatus.BAD_REQUEST),
     TOKEN_LOGOUT(1009,"Token had logout", HttpStatus.BAD_REQUEST),
     USER_NAME_EXISTS(1008,"User name existed", HttpStatus.BAD_REQUEST),
     AUTHENTICATION(1007,"Token not authentication ", HttpStatus.UNAUTHORIZED),

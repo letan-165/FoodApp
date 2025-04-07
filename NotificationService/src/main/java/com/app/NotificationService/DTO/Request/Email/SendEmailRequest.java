@@ -1,5 +1,4 @@
 package com.app.NotificationService.DTO.Request.Email;
-
 import com.app.NotificationService.DTO.BaseDTO.Sender;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -11,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SendEmailRequest {
-    String toUserID;
+    Sender to;
     String subject;
     String content;
 }

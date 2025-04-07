@@ -16,6 +16,7 @@ public class UserRequest {
     String password;
     String phone;
     String gmail;
+    int otp;
 
     @Builder.Default
     List<String> roles = new ArrayList<>(Collections.emptyList());;

@@ -37,7 +37,7 @@ import java.util.UUID;
 @Slf4j
 public class AuthService {
     UserRepository userRepository;
-    LoginService loginService;
+    TokenService tokenService;
     PasswordEncoder passwordEncoder;
 
     @NonFinal
@@ -63,7 +63,7 @@ public class AuthService {
         Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
         boolean verified = signedJWT.verify(jwsVerifier);
 
-        if (loginService.getToken(signedJWT.getJWTClaimsSet().getSubject()) == null)
+        if (tokenService.getToken(signedJWT.getJWTClaimsSet().getSubject()) == null)
             throw new AppException(ErrorCode.TOKEN_LOGOUT);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -75,7 +75,7 @@ public class AuthService {
     public boolean deleteToken(String token){
         try {
             SignedJWT jwt = SignedJWT.parse(token);
-            return loginService.deleteToken(jwt.getJWTClaimsSet().getSubject());
+            return tokenService.deleteToken(jwt.getJWTClaimsSet().getSubject());
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -108,7 +108,7 @@ public class AuthService {
 
 
         //Lưu login
-        loginService.saveToken(user.getUserID(), Token.builder()
+        tokenService.saveToken(user.getUserID(), Token.builder()
                         .tokenID(jwtClaimsSet.getJWTID())
                         .expiryTime(jwtClaimsSet.getExpirationTime().toInstant())
                 .build());

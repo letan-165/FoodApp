@@ -15,7 +15,7 @@ import java.time.Instant;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 @Slf4j
-public class LoginService {
+public class TokenService {
     RedisTemplate<String, Object> redisTemplate;
 
     public void saveToken(String userID, Token token) {

@@ -17,7 +17,7 @@ app:
 models:
   openRouter:
     url: https://openrouter.ai/api/v1
-    key: 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
+    key:
 
 chatbot:
   url: "${models.openRouter.url}"

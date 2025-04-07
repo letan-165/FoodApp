@@ -1,5 +1,6 @@
 package com.app.AccountService.Service;
 
+import com.app.AccountService.DTO.Request.OTP.OTPRequest;
 import com.app.AccountService.DTO.Request.UserRequest;
 import com.app.AccountService.DTO.Response.UserResponse;
 import com.app.AccountService.Entity.User;
@@ -30,12 +31,14 @@ public class UserService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     CartClient cartClient;
+    OTPService otpService;
 
     public List<User> findAll(){
         return userRepository.findAll();
     }
 
     public UserResponse save(UserRequest request){
+        otpService.verifyOTP(request.getGmail(),request.getOtp());
         if (userRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.USER_EXISTS);
         }
@@ -53,6 +56,7 @@ public class UserService {
     }
 
     public UserResponse update(String userID,UserRequest request){
+        otpService.verifyOTP(request.getGmail(),request.getOtp());
         User user = userRepository.findById(userID)
                 .orElseThrow(()-> new AppException(ErrorCode.USER_NO_EXISTS));
 
