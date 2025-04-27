@@ -2,7 +2,6 @@ package com.app.AccountService.Service;
 
 import com.app.AccountService.DTO.Request.Client.SendEmailRequest;
 import com.app.AccountService.DTO.Request.Client.Sender;
-import com.app.AccountService.DTO.Request.OTP.OTPRequest;
 import com.app.AccountService.Exception.AppException;
 import com.app.AccountService.Exception.ErrorCode;
 import com.app.AccountService.Repository.HttpClient.NotificationClient;
@@ -28,7 +27,7 @@ public class OTPService {
 
     @NonFinal
     @Value("${app.time.otp}")
-    int timeOtp;
+    long timeOtp;
 
     public int createOTP(String email){
         int otp = ThreadLocalRandom.current().nextInt(100000, 1000000);
@@ -47,12 +46,12 @@ public class OTPService {
         return otp;
     }
 
-    public boolean verifyOTP(String gmail, int otp){
-        Object getOtp = redisTemplate.opsForValue().get(gmail);
+    public boolean verifyOTP(String email, int otp){
+        Object getOtp = redisTemplate.opsForValue().get(email);
         if(getOtp == null || otp!= (int) getOtp)
             throw new AppException(ErrorCode.OTP_NO_VERIFY);
 
-        redisTemplate.opsForValue().getAndDelete(gmail);
+        redisTemplate.opsForValue().getAndDelete(email);
         return true;
     }
 

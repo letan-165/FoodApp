@@ -106,7 +106,6 @@ public class AuthService {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
         JWSObject jwsObject = new JWSObject(jwsHeader,payload);
 
-
         //Lưu login
         tokenService.saveToken(user.getUserID(), Token.builder()
                         .tokenID(jwtClaimsSet.getJWTID())

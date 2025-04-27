@@ -39,9 +39,9 @@ public class UserService {
 
     public UserResponse save(UserRequest request){
         otpService.verifyOTP(request.getGmail(),request.getOtp());
-        if (userRepository.existsByName(request.getName())){
+        if (userRepository.existsByName(request.getName()))
             throw new AppException(ErrorCode.USER_EXISTS);
-        }
+
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         request.getRoles().add(RoleEnum.CUSTOMER.getName());
         UserResponse userResponse = userMapper.toUserResponse(

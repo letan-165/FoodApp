@@ -1,6 +1,6 @@
 package com.app.AccountService.Entity;
 
-import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -13,7 +13,8 @@ import java.time.Instant;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Token {
-    @Id
+    @NotBlank
     String tokenID;
+
     Instant expiryTime;
 }

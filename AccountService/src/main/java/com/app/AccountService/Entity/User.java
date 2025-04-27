@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 import java.util.List;
 
 @Entity
-@Builder
+@Builder(toBuilder = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

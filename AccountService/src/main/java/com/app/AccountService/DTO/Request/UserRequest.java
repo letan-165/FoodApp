@@ -12,6 +12,7 @@ import java.util.*;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRequest {
+
     String name;
     String password;
     String phone;
