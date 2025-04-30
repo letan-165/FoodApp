@@ -5,13 +5,17 @@ import com.app.AccountService.DTO.Request.UserRequest;
 import com.app.AccountService.DTO.Response.UserResponse;
 import com.app.AccountService.Entity.User;
 import com.app.AccountService.Service.UserService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -21,35 +25,35 @@ public class UserController {
 
 
     @GetMapping
-    ApiResponse<List<User>>findAll(){
-        return ApiResponse.<List<User>>builder()
+    ApiResponse<List<UserResponse>>findAll(){
+        return ApiResponse.<List<UserResponse>>builder()
                 .result(userService.findAll())
                 .build();
     }
 
     @PostMapping
-    ApiResponse<UserResponse>save(@RequestBody UserRequest request){
+    ApiResponse<UserResponse>save(@RequestBody @Valid UserRequest request){
         return ApiResponse.<UserResponse>builder()
                 .result(userService.save(request))
                 .build();
     }
 
-    @PostMapping("/id={userID}")
+    @GetMapping("/id={userID}")
     ApiResponse<UserResponse>findById(@PathVariable String userID){
         return ApiResponse.<UserResponse>builder()
                 .result(userService.findById(userID))
                 .build();
     }
 
-    @PostMapping("/name={userID}")
-    ApiResponse<UserResponse>findByName(@PathVariable String userID){
+    @GetMapping("/name={name}")
+    ApiResponse<UserResponse>findByName(@PathVariable String name){
         return ApiResponse.<UserResponse>builder()
-                .result(userService.findByName(userID))
+                .result(userService.findByName(name))
                 .build();
     }
 
     @PutMapping("/{userID}")
-    ApiResponse<UserResponse>update( @PathVariable String userID,@RequestBody UserRequest request){
+    ApiResponse<UserResponse>update( @PathVariable String userID,@RequestBody @Valid UserRequest request){
         return ApiResponse.<UserResponse>builder()
                 .result(userService.update(userID,request))
                 .build();

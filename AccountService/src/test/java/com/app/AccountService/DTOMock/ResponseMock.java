@@ -10,7 +10,7 @@ public class ResponseMock {
                 .userID("userID")
                 .name("name")
                 .phone("phone")
-                .gmail("gmail")
+                .gmail("gmail@gmail")
                 .roles(List.of("ADMIN","CUSTOMER"))
                 .build();
     }

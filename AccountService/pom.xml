@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.app</groupId>
 	<artifactId>AccountService</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>AccountService</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
@@ -122,16 +122,14 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
 
-
-
-
-
-
-
-
-	</dependencies>
+    </dependencies>
 
 	<dependencyManagement>
 		<dependencies>

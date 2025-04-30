@@ -1,26 +1,20 @@
 package com.app.AccountService.Controller;
 
-import com.app.AccountService.Config.TestConfig;
-import com.app.AccountService.DTO.ApiResponse;
 import com.app.AccountService.DTO.Request.UserRequest;
 import com.app.AccountService.DTO.Response.UserResponse;
 import com.app.AccountService.DTOMock.RequestMock;
 import com.app.AccountService.DTOMock.ResponseMock;
+import com.app.AccountService.Exception.AppException;
 import com.app.AccountService.Exception.ErrorCode;
 import com.app.AccountService.Service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserControllerTest {
-
     @Autowired
     MockMvc mockMvc;
 
@@ -49,10 +42,14 @@ public class UserControllerTest {
     UserRequest userRequest;
     UserResponse userResponse;
 
+    String userID;
+
     @BeforeEach
     void initData(){
         userRequest = RequestMock.userMock();
         userResponse = ResponseMock.userMock();
+
+        userID = userResponse.getUserID();
     }
 
     @Test
@@ -138,6 +135,34 @@ public class UserControllerTest {
 
     }
 
+    @Test
+    void findByUserID_success() throws Exception {
+        when(userService.findById(userID)).thenReturn(userResponse);
+
+        mockMvc.perform(get("/user/id={userID}",userID)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("code").value(1000))
+                .andExpect(jsonPath("result.userID").value(userResponse.getUserID()))
+                .andExpect(jsonPath("result.name").value(userResponse.getName()))
+                .andExpect(jsonPath("result.phone").value(userResponse.getPhone()))
+                .andExpect(jsonPath("result.gmail").value(userResponse.getGmail()))
+                .andExpect(jsonPath("result.roles.length()").value(2));
+
+    }
+
+    @Test
+    void findByUserID_fail_notFindUser() throws Exception {
+        ErrorCode errorCode = ErrorCode.USER_NO_EXISTS;
+
+        when(userService.findById(userID)).thenThrow(new AppException(errorCode));
+
+        mockMvc.perform(get("/user/id={userID}",userID)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("code").value(errorCode.getCode()))
+                .andExpect(jsonPath("message").value(errorCode.getMessage()));
+    }
 
 
 
