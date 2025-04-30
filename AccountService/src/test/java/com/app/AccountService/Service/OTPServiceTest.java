@@ -36,28 +36,28 @@ public class OTPServiceTest {
 
     @Mock
     NotificationClient notificationClient;
-
+    @Value("${app.time.otp}")
     long timeOtp;
+    String email;
 
     @BeforeEach
     void initData(){
-        timeOtp = 1;
+        email = "tan@email";
         when(redisTemplate.opsForValue()).thenReturn(valueOperations);
     }
 
 
     @Test
     void testCreateOTP(){
-        String emailTest = "test@email";
-        int otp = otpService.createOTP(emailTest);
+        int otp = otpService.createOTP(email);
         assertThat(otp).isGreaterThanOrEqualTo(100000).isLessThanOrEqualTo(999999);
-        verify(valueOperations).set(eq(emailTest), eq(otp), eq(timeOtp),any(TimeUnit.class));
+
+        verify(valueOperations).set(eq(email), eq(otp), eq(timeOtp),any(TimeUnit.class));
         verify(notificationClient).sendEmail(any(SendEmailRequest.class));
     }
 
     @Test
     void testVerifyOTP_exists(){
-        String email = "test@gmail";
         int otp = 123345;
         when(valueOperations.get(email)).thenReturn(otp);
         boolean verifyOTP = otpService.verifyOTP(email,otp);
@@ -69,7 +69,6 @@ public class OTPServiceTest {
 
     @Test
     void testVerifyOTP_noExists(){
-        String email = "test@gmail";
         int otp = 123456;
         when(valueOperations.get(email)).thenReturn(123457);
 

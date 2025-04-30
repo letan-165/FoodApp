@@ -3,6 +3,7 @@ package com.app.AccountService.Exception;
 import com.app.AccountService.DTO.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -25,9 +26,21 @@ public class GlobalExceptionHandling {
     ResponseEntity<ApiResponse> handlingAppException(AppException e){
         return toResponseEntity(e.getErrorCode());
     }
+
     @ExceptionHandler(value = AuthorizationDeniedException.class)
     ResponseEntity<ApiResponse> handlingDeniedException(){
         return toResponseEntity(ErrorCode.AUTHORIZED);
     }
 
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    ResponseEntity<ApiResponse> handlingValidation(MethodArgumentNotValidException exception){
+        String message =  exception.getFieldError().getDefaultMessage();
+        ErrorCode errorCode;
+        try {
+            errorCode = ErrorCode.valueOf(message);
+        } catch (IllegalArgumentException e){
+            errorCode = ErrorCode.ERROR_VALIDATION;
+        }
+        return toResponseEntity(errorCode);
+    }
 }

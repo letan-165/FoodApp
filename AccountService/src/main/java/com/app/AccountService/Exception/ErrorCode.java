@@ -8,6 +8,11 @@ import org.springframework.http.HttpStatusCode;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    ERROR_VALIDATION(1014,"Error other invalidation", HttpStatus.BAD_REQUEST),
+    PASSWORD_INVALID(1013,"Password invalid", HttpStatus.BAD_REQUEST),
+    USERNAME_INVALID(1012,"Username invalid", HttpStatus.BAD_REQUEST),
+    GMAIL_INVALID(1011,"Gmail invalid", HttpStatus.BAD_REQUEST),
+
     OTP_NO_VERIFY(1010,"OTP no verify", HttpStatus.BAD_REQUEST),
     TOKEN_LOGOUT(1009,"Token had logout", HttpStatus.BAD_REQUEST),
     USER_NAME_EXISTS(1008,"User name existed", HttpStatus.BAD_REQUEST),

@@ -1,6 +1,5 @@
 package com.app.AccountService.DTO.Response;
 
-import com.app.AccountService.Entity.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

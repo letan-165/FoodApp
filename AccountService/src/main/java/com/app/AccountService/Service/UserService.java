@@ -33,14 +33,15 @@ public class UserService {
     CartClient cartClient;
     OTPService otpService;
 
-    public List<User> findAll(){
-        return userRepository.findAll();
+    public List<UserResponse> findAll(){
+        var users = userRepository.findAll();
+        return users.stream().map(userMapper::toUserResponse).toList();
     }
 
     public UserResponse save(UserRequest request){
-        otpService.verifyOTP(request.getGmail(),request.getOtp());
         if (userRepository.existsByName(request.getName()))
             throw new AppException(ErrorCode.USER_EXISTS);
+        otpService.verifyOTP(request.getGmail(),request.getOtp());
 
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         request.getRoles().add(RoleEnum.CUSTOMER.getName());
@@ -79,7 +80,6 @@ public class UserService {
     public UserResponse findById(String userID){
         User user = userRepository.findById(userID)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NO_EXISTS));
-
         return userMapper.toUserResponse(user);
     }
     public UserResponse findByName(String name){

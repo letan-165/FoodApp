@@ -8,6 +8,7 @@ import com.app.AccountService.DTO.Request.TokenRequest;
 import com.app.AccountService.Service.AuthService;
 import com.app.AccountService.Service.OTPService;
 import com.nimbusds.jose.JOSEException;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -52,7 +53,7 @@ public class AuthController {
 
     OTPService otpService;
     @GetMapping("/otp")
-    public ApiResponse<Integer> createOTP(@RequestBody EmailRequest request) {
+    public ApiResponse<Integer> createOTP(@RequestBody @Valid EmailRequest request) {
         return ApiResponse.<Integer>builder()
                 .result(otpService.createOTP(request.getEmail()))
                 .build();
