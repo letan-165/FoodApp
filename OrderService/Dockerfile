@@ -24,6 +24,7 @@ RUN keytool -importcert \
     -keystore $JAVA_HOME/lib/security/cacerts \
     -storepass changeit \
     -noprompt
+RUN keytool -list -alias atlas-root-ca -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
 
 # Set working folder to App and copy complied file from above step
 WORKDIR /app
