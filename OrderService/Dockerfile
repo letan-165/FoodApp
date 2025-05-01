@@ -15,8 +15,8 @@ RUN mvn package -DskipTests
 FROM amazoncorretto:21.0.4
 
 # ✅ Thêm chứng chỉ CA của MongoDB Atlas
-RUN curl -o /tmp/mongodb.pem https://www.mongodb.com/rootCA.pem && \
-    keytool -import -trustcacerts -keystore $JAVA_HOME/lib/security/cacerts \
+RUN curl -o /tmp/mongodb.pem https://www.mongodb.com/docs/drivers/certificates/mongodb.pem && \
+    keytool -importcert -trustcacerts -cacerts \
     -storepass changeit -noprompt -alias mongodbCA -file /tmp/mongodb.pem
 
 # Set working folder to App and copy complied file from above step
