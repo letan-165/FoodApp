@@ -12,7 +12,6 @@ RUN mvn package -DskipTests
 
 #Stage 2: create image
 FROM amazoncorretto:17.0.15
-
 # Set working folder to App and copy complied file from above step
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
