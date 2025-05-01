@@ -7,7 +7,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: ${MONGODB_URL:mongodb://root:root@localhost:27017/FoodApp?authSource=admin}
+      uri: mongodb+srv://letan:root@cluster0.6tbmrfq.mongodb.net/FoodApp?retryWrites=true&w=majority&appName=Cluster0
 
 app:
   service:
@@ -15,6 +15,4 @@ app:
 
 key:
   jwt: ${KEY_JWT}
-
-
 
