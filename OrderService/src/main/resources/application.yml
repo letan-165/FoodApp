@@ -7,7 +7,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://letan:root@cluster0.6tbmrfq.mongodb.net/FoodApp?retryWrites=true&w=majority&appName=Cluster0
+      uri: mongodb+srv://letan:root@cluster0.6tbmrfq.mongodb.net/FoodApp?retryWrites=true&w=majority&appName=Cluster0&sslInvalidHostNameAllowed=true&tlsAllowInvalidCertificates=true
 
 app:
   service:
