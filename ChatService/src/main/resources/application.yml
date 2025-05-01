@@ -7,7 +7,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://root:root@localhost:27017/FoodApp?authSource=admin
+      uri: ${MONGODB_URL:mongodb://root:root@localhost:27017/FoodApp?authSource=admin}
 
 app:
   service:
@@ -17,7 +17,7 @@ app:
 models:
   openRouter:
     url: https://openrouter.ai/api/v1
-    key:
+    key: ${KEY_OPENROUTER}
 
 chatbot:
   url: "${models.openRouter.url}"

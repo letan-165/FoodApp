@@ -6,7 +6,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://root:root@localhost:27017/FoodApp?authSource=admin
+      uri: ${MONGODB_URL:mongodb://root:root@localhost:27017/FoodApp?authSource=admin}
 
 app:
   service:
@@ -19,8 +19,6 @@ app:
       email: 2251160057@ut.edu.vn
 
 
-
-
 key:
-  jwt:
-  email:
+  jwt: ${KEY_JWT}
+  email: ${KEY_BREVO}

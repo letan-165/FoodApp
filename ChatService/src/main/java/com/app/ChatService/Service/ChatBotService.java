@@ -54,7 +54,7 @@ public class ChatBotService {
                 .build());
 
         ChatBotRequest chatBotRequest = ChatBotRequest.builder()
-                .model(ModelChatBot.GEMINIPRO_2_5.getModel())
+                .model(ModelChatBot.DEEPSEAK_V3.getModel())
                 .messages(chatBot.getMessages())
                 .build();
 

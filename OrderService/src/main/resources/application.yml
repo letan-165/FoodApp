@@ -7,14 +7,14 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://root:root@localhost:27017/FoodApp?authSource=admin
+      uri: ${MONGODB_URL:mongodb://root:root@localhost:27017/FoodApp?authSource=admin}
 
 app:
   service:
     account: http://localhost:8080/account_service
 
 key:
-  jwt:
+  jwt: ${KEY_JWT}
 
 
 
