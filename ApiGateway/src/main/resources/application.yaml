@@ -18,9 +18,16 @@ spring:
             - StripPrefix=2
 
         - id: order_service
-          uri: ${CART_URL:http://localhost:8081}
+          uri: ${ORDER_URL:http://localhost:8081}
           predicates:
             - Path=${app.api-prefix}/order_service/**
+          filters:
+            - StripPrefix=2
+
+        - id: chat_service
+          uri: ${CHAT_URL:http://localhost:8082}
+          predicates:
+            - Path=${app.api-prefix}/chat_service/**
           filters:
             - StripPrefix=2
 
