@@ -10,7 +10,7 @@ spring:
 
 app:
   service:
-    account: http://localhost:8080/account_service
+    account: ${ACCOUNT_URL:http://localhost:8080}/account_service
 
   client:
     smtp: https://api.brevo.com/v3/smtp

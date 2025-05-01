@@ -21,8 +21,8 @@ key:
 
 app:
   services:
-    cart: http://localhost:8081/order_service/cart
-    notification: http://localhost:8083/notification_service
+    cart: ${CART_URL:http://localhost:8081}/order_service/cart
+    notification: ${NOTIFICATION_URL:http://localhost:8083}/notification_service
 
   time:
     otp: 1
