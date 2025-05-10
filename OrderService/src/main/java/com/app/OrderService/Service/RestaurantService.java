@@ -54,7 +54,7 @@ public class RestaurantService {
 
     public RestaurantResponse save(RestaurantSaveRequest request){
         userClient.findById(request.getUserID());
-        Restaurant restaurant =restaurantMapper.toRestaurant(request);
+        Restaurant restaurant = restaurantMapper.toRestaurant(request);
         restaurant.setStatus(RestaurantStatus.PENDING);
 
         return restaurantMapper.toRestaurantResponse
@@ -92,7 +92,6 @@ public class RestaurantService {
     public ItemRestaurantResponse addItem(String restaurantID, ItemEditRequest request){
         Restaurant restaurant = restaurantRepository.findById(restaurantID)
                 .orElseThrow(()->new AppException(ErrorCode.RESTAURANT_NO_EXISTS));
-
         Long itemID = 1 + restaurant.getMenu().values().stream()
                 .map(ItemEntity::getItemID)
                 .max(Long::compareTo)

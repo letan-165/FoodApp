@@ -31,7 +31,8 @@ public class PaymentService {
     }
 
     public PaymentResponse save(PaymentRequest request){
-        orderRepository.findById(request.getOrderID()).orElseThrow(()->new AppException(ErrorCode.ORDER_NO_EXISTS));
+        orderRepository.findById(request.getOrderID())
+                .orElseThrow(()->new AppException(ErrorCode.ORDER_NO_EXISTS));
         return paymentMapper.toPaymentResponse(
                 paymentRepository.save(
                         paymentMapper.toPayment(request)));
@@ -44,7 +45,8 @@ public class PaymentService {
     }
 
     public PaymentResponse update(String paymentID, PaymentRequest request) {
-        orderRepository.findById(request.getOrderID()).orElseThrow(()->new AppException(ErrorCode.ORDER_NO_EXISTS));
+        orderRepository.findById(request.getOrderID())
+                .orElseThrow(()->new AppException(ErrorCode.ORDER_NO_EXISTS));
         if (!paymentRepository.existsById(paymentID)) {
             throw new AppException(ErrorCode.PAYMENT_NO_EXISTS);
         }
