@@ -1,10 +1,13 @@
 package com.app.OrderService.DTOMock;
 
 import com.app.OrderService.DTO.Response.Cart.RestaurantCartResponse;
+import com.app.OrderService.DTO.Response.OrderResponse;
 import com.app.OrderService.DTO.Response.Restaurant.ItemRestaurantResponse;
 import com.app.OrderService.DTO.Response.Restaurant.RestaurantResponse;
+import com.app.OrderService.Enum.OrderStatus;
 import com.app.OrderService.Enum.RestaurantStatus;
 
+import java.time.Instant;
 import java.util.List;
 
 public class ResponseMock {
@@ -33,6 +36,23 @@ public class ResponseMock {
                 .restaurantID("restaurantID")
                 .name("name")
                 .menu(menu)
+                .build();
+    }
+
+    public static OrderResponse orderResponse() {
+        var menu = List.of(EntityMock.itemEntityMock(1L), EntityMock.itemEntityMock(2L));
+        return OrderResponse.builder()
+                .orderID("orderID")
+                .customerID("customerID")
+                .restaurantID("restaurantID")
+                .shipperID("shipperID")
+                .paymentID("paymentID")
+                .menu(menu)
+                .total(100000L)
+                .time(Instant.now())
+                .status(OrderStatus.PENDING)
+                .address("address")
+                .phone("phone")
                 .build();
     }
 }

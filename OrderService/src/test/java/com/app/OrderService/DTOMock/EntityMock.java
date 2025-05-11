@@ -4,9 +4,12 @@ import com.app.OrderService.DTO.BaseDTO.ItemCartEntity;
 import com.app.OrderService.DTO.BaseDTO.ItemEntity;
 import com.app.OrderService.DTO.BaseDTO.RestaurantCartEntity;
 import com.app.OrderService.Entity.Cart;
+import com.app.OrderService.Entity.Order;
 import com.app.OrderService.Entity.Restaurant;
+import com.app.OrderService.Enum.OrderStatus;
 import com.app.OrderService.Enum.RestaurantStatus;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,5 +70,25 @@ public class EntityMock {
                 .build();
     }
 
+
+    public static Order order(){
+        AtomicLong atomicLong = new AtomicLong(1);
+        List<ItemEntity> itemEntities = new ArrayList<>(List.of(itemEntityMock(1L),itemEntityMock(2L)));
+        Map<Long, ItemEntity> menu = itemEntities.stream()
+                .collect(Collectors.toMap( item -> atomicLong.getAndIncrement(),item->item));
+        return Order.builder()
+                .orderID("orderID")
+                .customerID("customerID")
+                .restaurantID("restaurantID")
+                .shipperID("shipperID")
+                .paymentID("paymentID")
+                .menu(menu)
+                .total(100000L)
+                .time(Instant.now())
+                .status(OrderStatus.PENDING)
+                .address("address")
+                .phone("phone")
+                .build();
+    }
 
 }

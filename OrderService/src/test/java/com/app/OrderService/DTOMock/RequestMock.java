@@ -1,10 +1,13 @@
 package com.app.OrderService.DTOMock;
 
 import com.app.OrderService.DTO.Request.Cart.ItemCartRequest;
+import com.app.OrderService.DTO.Request.Order.OrderSaveRequest;
 import com.app.OrderService.DTO.Request.Restaurant.ItemEditRequest;
 import com.app.OrderService.DTO.Request.Restaurant.RestaurantSaveRequest;
 import com.app.OrderService.DTO.Request.Restaurant.RestaurantUpdateRequest;
 import com.app.OrderService.Enum.RestaurantStatus;
+
+import java.util.List;
 
 public class RequestMock {
     public static RestaurantSaveRequest restaurantSaveRequest(){
@@ -41,4 +44,17 @@ public class RequestMock {
                 .itemID(id)
                 .build();
     }
+
+    public static OrderSaveRequest orderSaveRequest(){
+        return OrderSaveRequest.builder()
+                .customerID("customerID")
+                .restaurantID("restaurantID")
+                .paymentID("paymentID")
+                .menu(List.of(EntityMock.itemCartEntity(1L),EntityMock.itemCartEntity(2L)))
+                .address("address")
+                .phone("phone")
+                .build();
+    }
+
+
 }
