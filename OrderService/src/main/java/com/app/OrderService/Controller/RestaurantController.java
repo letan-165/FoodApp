@@ -60,6 +60,7 @@ public class RestaurantController {
                 .result(restaurantService.update(restaurantID,request))
                 .build();
     }
+
     @DeleteMapping("/{restaurantID}")
     ApiResponse<Boolean> deleteById(@PathVariable String restaurantID){
         return ApiResponse.<Boolean>builder()
@@ -77,7 +78,7 @@ public class RestaurantController {
     }
 
     @PutMapping("/id={restaurantID}/item/id={itemID}/edit")
-    ApiResponse<ItemRestaurantResponse> addItem(@PathVariable String restaurantID,@PathVariable Long itemID,@RequestBody ItemEditRequest request){
+    ApiResponse<ItemRestaurantResponse> editItem(@PathVariable String restaurantID,@PathVariable Long itemID,@RequestBody ItemEditRequest request){
         return ApiResponse.<ItemRestaurantResponse>builder()
                 .message("Cập nhật món ăn: "+itemID)
                 .result(restaurantService.editItem( restaurantID,itemID,request))

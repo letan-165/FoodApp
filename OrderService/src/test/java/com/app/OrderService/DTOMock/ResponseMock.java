@@ -27,6 +27,8 @@ public class ResponseMock {
         return ItemRestaurantResponse.builder()
                 .name(name)
                 .price(10000L)
+                .itemID(1L)
+                .price(10000L)
                 .build();
     }
 
