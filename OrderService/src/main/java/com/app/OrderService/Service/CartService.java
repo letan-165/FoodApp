@@ -27,32 +27,32 @@ public class CartService {
     CartRepository cartRepository;
     CartMapper cartMapper;
 
-    public List<CartResponse> findAll(){
+    public List<CartResponse> findAll() {
         List<Cart> carts = cartRepository.findAll();
         return carts.stream().map(cartMapper::toCartResponse).toList();
     }
 
-    public CartResponse findById(String cartID){
+    public CartResponse findById(String cartID) {
         Cart cart = cartRepository.findById(cartID)
-                .orElseThrow(()->new AppException(ErrorCode.CART_NO_EXISTS));
+                .orElseThrow(() -> new AppException(ErrorCode.CART_NO_EXISTS));
 
         return cartMapper.toCartResponse(cart);
     }
 
-    public CartResponse save(String cartID){
-        if(cartRepository.existsById(cartID))
+    public CartResponse save(String cartID) {
+        if (cartRepository.existsById(cartID))
             throw new AppException(ErrorCode.CART_EXISTS);
 
         return cartMapper.toCartResponse(cartRepository.save(Cart.builder()
-                        .userID(cartID)
-                        .restaurants(Collections.emptyMap())
+                .userID(cartID)
+                .restaurants(Collections.emptyMap())
                 .build()));
     }
 
-    public Boolean delete(String cartID){
-        if(!cartRepository.existsById(cartID))
+    public Boolean delete(String cartID) {
+        if (!cartRepository.existsById(cartID))
             throw new AppException(ErrorCode.CART_NO_EXISTS);
-        try{
+        try {
             cartRepository.deleteById(cartID);
             return true;
         } catch (Exception e) {
@@ -62,63 +62,57 @@ public class CartService {
 
     ItemService itemService;
 
-    public RestaurantCartResponse addItem(ItemCartRequest request){
+    public RestaurantCartResponse addItem(ItemCartRequest request) {
         Cart cart = cartRepository.findById(request.getCartID())
-                .orElseThrow(()->new AppException(ErrorCode.CART_NO_EXISTS));
+                .orElseThrow(() -> new AppException(ErrorCode.CART_NO_EXISTS));
 
         itemService.findItem(request.getRestaurantID(), request.getItemID());
 
 
         RestaurantCartEntity restaurantCart = cart.getRestaurants().get(request.getRestaurantID());
-        if (restaurantCart==null)
+        if (restaurantCart == null)
             restaurantCart = RestaurantCartEntity.builder()
                     .restaurantID(request.getRestaurantID())
                     .build();
-
-        restaurantCart.getMenu().get(request.getItemID());
 
         ItemCartEntity itemCart = restaurantCart.getMenu()
                 .putIfAbsent(request.getItemID(), ItemCartEntity.builder()
                         .itemID(request.getItemID())
                         .quantity(1L)
-                    .build());
+                        .build());
 
-        if(itemCart!=null)
+        if (itemCart != null)
             throw new RuntimeException("item đã tồn tại trong giỏ hàng");
 
-        cart.getRestaurants().put(restaurantCart.getRestaurantID(),restaurantCart);
+        cart.getRestaurants().put(restaurantCart.getRestaurantID(), restaurantCart);
 
-        try{
+        try {
             cartRepository.save(cart);
-            return cartMapper.toRestaurantCartResponse( restaurantCart,request.getRestaurantID());
-        }catch (Exception e){
+            return cartMapper.toRestaurantCartResponse(restaurantCart, request.getRestaurantID());
+        } catch (Exception e) {
             throw new RuntimeException("Thêm item không thành công");
         }
     }
 
-    public Boolean deleteItem(ItemCartRequest request){
+    public Boolean deleteItem(ItemCartRequest request) {
         Cart cart = cartRepository.findById(request.getCartID())
-                .orElseThrow(()->new AppException(ErrorCode.CART_NO_EXISTS));
+                .orElseThrow(() -> new AppException(ErrorCode.CART_NO_EXISTS));
 
         itemService.findItem(request.getRestaurantID(), request.getItemID());
 
         RestaurantCartEntity restaurantCart = cart.getRestaurants().get(request.getRestaurantID());
-        if (restaurantCart==null)
+        if (restaurantCart == null)
             throw new RuntimeException("Cửa hàng không tồn tại trong giỏ hàng");
 
         ItemCartEntity itemCart = restaurantCart.getMenu().remove(request.getItemID());
-        if (itemCart==null)
+        if (itemCart == null)
             throw new RuntimeException("Món ăn không có trong giỏ hàng");
 
-
-        try{
+        try {
             cartRepository.save(cart);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Thêm item không thành công");
         }
     }
-
-
-
 }

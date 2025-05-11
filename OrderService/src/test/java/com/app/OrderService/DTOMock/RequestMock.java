@@ -1,5 +1,6 @@
 package com.app.OrderService.DTOMock;
 
+import com.app.OrderService.DTO.Request.Cart.ItemCartRequest;
 import com.app.OrderService.DTO.Request.Restaurant.ItemEditRequest;
 import com.app.OrderService.DTO.Request.Restaurant.RestaurantSaveRequest;
 import com.app.OrderService.DTO.Request.Restaurant.RestaurantUpdateRequest;
@@ -30,6 +31,14 @@ public class RequestMock {
                 .name("name")
                 .quantity(10L)
                 .price(10000L)
+                .build();
+    }
+
+    public static ItemCartRequest itemCartRequest(Long id){
+        return ItemCartRequest.builder()
+                .cartID("cartID")
+                .restaurantID("restaurantID")
+                .itemID(id)
                 .build();
     }
 }
